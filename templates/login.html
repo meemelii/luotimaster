@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Kirjautuminen</title>
+</head>
+
+<body>
+  {% for message in get_flashed_messages() %}
+  <p>
+    <b>{{ message }}</b>
+  </p>
+  {% endfor %}
+
+
+  {% if session.user_ud %}
+  <p>
+    Olet kirjautunut peitenimellä {{ session.user_id }}
+  </p>
+  <p>
+    <a href="/">Palaa etusivulle</a>
+    
+    <a href="/logout">Kirjaudu ulos</a>
+  </p>
+  {% else %}
+  <form action="/login" method="post">
+    <p>
+      Tunnus: <br />
+      <input type="text" name="username" value="{{filled.username}}"/>
+    </p>
+    <p>
+      Salasana: <br />
+      <input type="password" name="password" />
+    </p>
+    <input type="submit" value="Kirjaudu" />
+  </form>
+  {% endif %}
+  <hr />
+  <p>
+    <a href="/register">Luo tunnus</a> <br />
+    <a href="/">Etusivulle</a>
+  </p>
+
+</body>
+
+</html>

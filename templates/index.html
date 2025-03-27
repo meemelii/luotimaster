@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Etusivu</title>
+</head>
+
+<body>
+  <h1>Luotimaster 0.0.2</h1>
+  <hr />
+
+  {% for message in get_flashed_messages() %}
+  <p>
+    <b>{{ message }}</b>
+  </p>
+  <hr />
+  {% endfor %}
+
+  {% if session.user_id %}
+  <p>
+    Olet kirjautunut sisään peitenimellä {{ username }}
+  </p>
+  <br />
+
+  <p>
+    <a href="/report">Ilmoita tapahtumasta</a>
+  </p>
+
+  <p>
+    <a href="/events">Tarkistele tapahtumiasi</a>
+  </p>
+
+  <p>
+    <a href="/murders">Murha-arkistot</a>
+  </p>
+  <hr />
+
+  <p>
+    <a href="/logout">Kirjaudu ulos</a>
+  </p>
+
+
+  {% else %}
+ 
+  <p>
+    <p>Et ole kirjautunut sisään.</p>
+    <hr />
+    <a href="/login">Kirjaudu sisään</a>
+    <a href="/register">Luo tunnus</a>
+  </p> 
+  {% endif %}
+
+</body>
+
+</html>

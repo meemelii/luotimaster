@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Tapahtuma</title>
+      </head>
+      <body>
+    <h1> T O I M E K S I A N T O </h1>
+    <hr />
+
+
+    <p>
+      Tapahtumanumero: {{ event.id }}<br />
+      
+      Tappaja: {{ event.killer_username }}<br />
+      
+      Kohde: {{ event.target_username }}<br />
+
+      Ase: {{weapon_name}} <br />
+      
+      
+      Sijainti: {% if event.zip == None %}
+          Ei tiedossa.
+      {% else %} 
+      {{ event.zip }}
+      {% endif %}
+      <br />
+
+      Status
+      {% if event.confirm_status == 0 %}
+      Ei varmistettu.
+      {% else %}
+      Varmistettu.
+      {% endif %}  
+    </p>
+
+    {% if event.user_id == user_id %}
+    <form action="/event/{{event.id}}/edit">
+      <input type="submit" value="Muokkaa tapahtumaa" /></form> <br />
+
+    <form action="/event/{{event.id}}/delete">
+      <input type="submit" value="Poista tapahtuma" />
+    </form>
+
+    {% endif %}
+
+    {% if event.target_id == user_id %}
+    {% if event.confirm_status == 0 %}
+      <form action="/event/{{event.id}}/confirm" method="post">
+        <input type="hidden" name="confirm" value="1">
+        <input type="submit" value="Varmista tapahtuma" />
+      </form>
+    {% else %}
+    <form action="/event/{{event.id}}/confirm" method="post">
+      <input type="hidden" name="confirm" value="0">
+      <input type="submit" value="Peru varmistaminen" />
+    </form>
+    {% endif %}
+    {% endif %}
+
+    <hr />
+  <br />
+    <a href="/events">Tarkastele tapahtumiasi</a>         
+     | 
+    <a href="/">Etusivulle</a>
+  </p>
+
+</body>
+
+</html>

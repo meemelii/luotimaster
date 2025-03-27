@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Uusi tapahtuma</title>
+
+
+
+
+  {% if session.user_id %}
+  <h2>Uusi tapahtuma</h2>
+
+  <form action="/new_report" method="post">
+    <p>
+      Kenet olet eliminoinut?
+    </br>
+      <label for="kohde">
+        <select id="kohde" name="kohde">
+        {% for kohde in kohteet %}
+        <option value="{{ kohde[0] }}">{{ kohde[1] }}</option>
+        {% endfor %}
+      </select>
+    </p>
+    
+    <input type="submit" value="Ilmoita!" />
+  </form>
+  <hr />
+  {% endif %}
+
+  <p>
+    <a href="/">Etusivulle</a>
+  </p>
+
+
+</head>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Haku</title>
+</head>
+
+<body>
+    <h2>Haku</h2>
+
+<form action="/search" method="get">
+    <p>
+      Hakusana:
+      {% if query %}
+      <input type="text" name="query" value="{{ query }}" />
+      {% else %}
+      <input type="text" name="query" />
+      {% endif %}
+    </p>
+    <input type="submit" value="Hae" />
+  </form>
+  
+  {% if query %}
+  <hr />
+  <h2>Tulokset:</h2>
+  <ul>
+
+    {% for result in results %}
+        <li>
+          <a href="/event/{{result.id}}">Tapahtuma #{{result.id}}: </a>   
+          <br/>
+        {{ result.killer_username }} tappoi {{ result.target_username }}
+        {% if result.zip %}
+        Sijainnissa {{result.zip}}
+        {% endif %}
+    </li>  
+
+    {% endfor %}
+    </ul>
+    {% endif %}
+  
+
+  <hr />
+  <p>
+    <a href="/">Etusivulle</a>
+    <p>
+</body>

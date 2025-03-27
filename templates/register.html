@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Rekisteröinti</title>
+</head>
+
+<body>
+  {% for message in get_flashed_messages() %}
+  <p>
+    <b>{{ message }}</b>
+  </p>
+  {% endfor %}
+
+  <form action="/create" method="post">
+    <p>
+      Tunnus: <br />
+      <input type="text" name="username", value="{{ filled.username }}", maxlenght="20"/>
+    </p>
+    <p>
+      Salasana: <br />
+      <input type="password" name="password1" />
+    </p>
+    <p>
+      Salasana uudestaan: <br />
+      <input type="password" name="password2" />
+    </p>
+    <input type="submit" value="Luo tunnus" />
+  </form>
+
+  <hr />
+  <p>
+    <a href="/">Etusivulle</a>
+  </p>
+</body>
+
+</html>

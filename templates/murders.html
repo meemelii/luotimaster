@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>MURHAT</title>
+</head>
+
+
+<h1>Murha-arkistot:</h1>
+<form action="/search" method="get">
+  <p>
+    Hakusana:
+    {% if query %}
+    <input type="text" name="query" value="{{ query }}" />
+    {% else %}
+    <input type="text" name="query" />
+    {% endif %}
+  </p>
+  <input type="submit" value="Hae" />
+</form>
+
+
+
+  {% for murder in murders %}
+    <p>
+      <br />
+      Tapahtumanumero: {{ murder.id }}
+      <br />
+      {{ murder.killer_username }} tappoi {{ murder.target_username }}
+      {% if murder.zip %}
+      Sijainnissa {{ murder.zip }}
+      {% endif %}<br />
+      <a href="/event/{{murder.id}}">Tarkastele</a>
+  {% endfor %}
+
+
+  <hr />
+
+  <p>
+    <a href="/">Etusivulle</a>
+</p>
+</body>

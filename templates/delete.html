@@ -1,0 +1,40 @@
+{% if event.user_id == user_id %}
+<form action="/event/{{event_id}}/delete" method="POST">
+    
+  
+  <h1>
+      Haluatko varmasti poistaa seuraavan ilmoituksen:
+    </h1>
+
+    <p>
+      Tapahtumanumero: {{ event.id }}<br />
+      
+      Tappaja: {{ event.killer_username }}<br />
+      
+      Kohde: {{ event.target_username }}<br />
+
+      Ase: {{weapon_name}} <br />
+      
+      
+      Sijainti: {% if event.zip == None %}
+          Ei tiedossa.
+      {% else %} 
+      {{ event.zip }}
+      {% endif %}
+      <br />
+
+      Status
+      {% if event.confirm_status == 0 %}
+      Ei varmistettu.
+      {% else %}
+      Varmistettu.
+      {% endif %}  
+    </p>
+
+    <input type="submit" name="continue" value="Poista ilmoitus." />
+    <input type="submit" name="cancel" value="Eiku." />
+  </form>
+
+  {% else %}
+  <p> Virhe: ei oikeuksia! </p>
+  {%endif%}

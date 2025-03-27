@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Omat tapahtumat</title>
+</head>
+
+<h1>Ei-varmistetut tapahtumat</h1>
+
+<hr />  
+<body>
+
+  {% for message in get_flashed_messages() %}
+  <p>
+    <b>{{ message }}</b>
+  </p><hr />  
+  {% endfor %}
+
+  <h2>Sinuun kohdistuvat tapahtumailmoitukset:</h2>
+  {% for incoming_event in incoming_events %}
+  <p>
+    <br />
+    tapahtumanumero: {{ incoming_event.id }}
+    <br />
+    Tappaja: {{ incoming_event.killer_username }}
+    <br />
+    
+    <a href="/event/{{incoming_event.id}}">Tarkastele</a>
+  </p>
+  {% endfor %}
+
+  <br />
+  <h2>Ilmoittamasi ei-varmistetut tapahtumat:</h2>
+  
+  {% for outgoing_event in outgoing_events %}
+  <p>
+    <br />
+    Tapahtumanumero: {{outgoing_event.id}}
+    <br />
+    Kohde: {{ outgoing_event.target_username }}
+    
+    <br />
+    <a href="/event/{{outgoing_event.id}}">Tarkastele</a>
+  </p>
+  {% endfor %}
+
+  <br />
+  <hr />  
+  <p>
+      <a href="/">Etusivulle</a>
+  </p>
+</body>

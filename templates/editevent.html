@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+{% if event.user_id == session.user_id %}
+<html>
+    <head>
+        <title>Tapahtuman muokkaus</title>
+      </head>
+      <body>
+    <h1> TAPAHTUMA </h1>
+    <hr />
+
+
+
+    <p>
+        Tapahtumanumero: {{ event.id }}<br />
+      
+        Tappaja: {{ killer_username }}<br />
+      
+        Kohde: {{ target_username }}<br />
+
+
+        <form action="/event/{{event.id}}/edited" method="post">
+            <p>
+              Murhapaikka (postinumero): <br />
+              <input type="text" name="zip" {% if event.zip != None %} value="{{event.zip}}" {% endif %} maxlength="5" minlength="5" />
+            </p>
+            <label for="weapontype">Asetyyppi:</label><br />
+            <select id="Asetyyppi" name="Asetyyppi">
+            <option value="1">Foliopuukko / muu lähiase</option>
+            <option value="2">Nerf- tai vesipistooli</option>
+            <option value="3">Ruoka- tai kosketusmyrkky</option>
+            <option value="4">Tappava eläin</option>
+            <option value="5">Pommi tai muu ansa</option>
+            <option value="6">Muu/luokittelematon</option>
+            </select>
+            <br />  
+            <br />  
+            <input type="submit" value="Tallenna muutokset" />
+          </form>
+        
+        <br />  
+  </p>
+
+  {% else %}
+  <p> Virhe: ei oikeuksia! </p>
+
+  {% endif %}
+
+  <p>
+    <a href="/">Etusivulle</a>
+    <p>
+</body>
+
+</html>
