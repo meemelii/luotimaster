@@ -4,7 +4,7 @@ Sovelluksen toiminnot:
 - Käyttäjä pystyy luomaan tunnuksen ja kirjautumaan sisään sovellukseen. 
 - Käyttäjä pystyy lisäämään, muokkaamaan ja poistamaan ilmoitettuja toimeksiantoja. 
 - Käyttäjä pystyy lisäämään kuvia ilmoitettuihin toimeksiantoihin.
-- Käyttäjä näkee sovellukseen lisätyt varmistetut toimeksiannot.
+- Käyttäjä näkee sovellukseen lisätyt varmistetut toimeksiannot, sekä häntä koskevat ilmoitetut toimeksiannot.
 - Käyttäjä pystyy etsimään varmistettuja toimeksiantoja hakusanalla.
 - Sovelluksessa on käyttäjäsivut, jotka näyttävät tilastoja ja käyttäjän lisäämät toimeksiannot.
 - Käyttäjä pystyy valitsemaan ilmoitukselle asetyypin ja sijainnin.
