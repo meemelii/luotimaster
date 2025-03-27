@@ -1,6 +1,7 @@
 # luotimaster
 
-Luotimaster on kevään 2025 Tietokannat ja web-ohjelmointi-kurssityö. Se on kehitetty toimimaan opiskelijajärjestön [Helsingin yliopiston salamurhaajien](https://salamurhaajat.net/) hallituksen pelaaman _Luotipelin_ hallintointivälineenä. Luotipelissä kaikki hallituksen jäsenet jahtaavat toisiaan ja pyrkivät "murhaamaan" toisensa sääntöjen mukaisesti esimerkiksi nerf-pistooleilla tai "myrkyllisillä" muovihämähäkeillä. Ohjelmiston tavoitteena olisi mahdollistaa murhien kirjaamisen yksinkertaisesti ja toimivasti. Luotimaster nimi viittaa järjestön varsinaiseen turnaushallintajärjestelmän, [Surman](https://github.com/hys-helsinki/surma), vaihtoehtoiseen nimeen _Murhamaster 3.0_.
+Luotimaster on kevään 2025 Tietokannat ja web-ohjelmointi-kurssityö. Se on kehitetty toimimaan opiskelijajärjestön [Helsingin yliopiston salamurhaajien](https://salamurhaajat.net/) hallituksen pelaaman _Luotipelin_ hallintointivälineenä. Luotipelissä kaikki hallituksen jäsenet jahtaavat ja pyrkivät "murhaamaan" toisensa sääntöjen mukaisesti hallituksen kokouksien välissä, esimerkiksi nerf-pistooleilla tai "myrkyllisillä" muovihämähäkeillä. 
+Ohjelmiston tavoitteena olisi mahdollistaa murhien kirjaamisen yksinkertaisesti ja toimivasti. Luotimaster nimi viittaa järjestön varsinaiseen turnaushallintajärjestelmän, [Surman](https://github.com/hys-helsinki/surma), vaihtoehtoiseen nimeen _Murhamaster 3.0_.
 
 
 ## Kurssin määräämät sovelluksen toiminnot:
