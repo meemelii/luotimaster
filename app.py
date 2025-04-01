@@ -79,7 +79,7 @@ def delete_event(event_id):
     user_id = session["user_id"]
     event = events.get_event(event_id)
     if request.method == "GET":
-        return render_template("delete.html", event_id=event_id, user_id=event, event=event)
+        return render_template("delete.html", event_id=event_id, user_id=user_id, event=event)
     if request.method == "POST":
         if "continue" in request.form:
             events.delete_event(event_id)
