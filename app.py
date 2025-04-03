@@ -34,11 +34,13 @@ def search():
 
 @app.route("/report")
 def report():
+    require_login()
     kohteet = users.get_other_users(session["user_id"])
     return render_template("report.html", kohteet=kohteet )
 
 @app.route("/new_report", methods=["POST"])
 def new_report():
+    require_login()
     check_csrf()
     target_id = request.form["kohde"]
     event_id = events.add_event(session["user_id"], target_id)
@@ -47,7 +49,9 @@ def new_report():
 @app.route("/event/<int:event_id>")
 def show_event(event_id):
     event = events.get_event(event_id)
-    user_id = session["user_id"]
+    if "user_id" in session:
+        user_id = session["user_id"]
+    else: user_id = None
     weapon_name = name_weapon(event[4])
     return render_template("eventpage.html", event=event, user_id = user_id, weapon_name = weapon_name)
 
@@ -58,6 +62,7 @@ def register():
 
 @app.route("/event/<int:event_id>/edit")
 def editpage(event_id):
+    require_login()
     event= events.get_event(event_id)
     killer_username = users.get_username(event[1])
     target_username = users.get_username(event[2])
@@ -65,6 +70,7 @@ def editpage(event_id):
 
 @app.route("/event/<int:event_id>/edited", methods=["POST"])
 def edited(event_id):
+    require_login()
     check_csrf()
     zip = request.form["zip"]
     weapon_type = request.form["Asetyyppi"]
@@ -73,12 +79,14 @@ def edited(event_id):
 
 @app.route("/event/<int:event_id>/confirm", methods=["POST"])
 def confirm(event_id): 
+    require_login()
     check_csrf()   
     events.confirm(event_id, request.form["confirm"])    
     return redirect("/event/"+ str(event_id))
 
 @app.route("/event/<int:event_id>/delete", methods=["GET","POST"])
 def delete_event(event_id):
+    require_login()
     check_csrf()
     user_id = session["user_id"]
     event = events.get_event(event_id)
@@ -90,8 +98,6 @@ def delete_event(event_id):
             flash("Tapahtuma poistettu.")
             return redirect("/events")
         else: return redirect("/events/"+ str(event_id))
-
-
 
 
 def name_weapon(weapon_id):
@@ -107,7 +113,6 @@ def name_weapon(weapon_id):
 
 @app.route("/create", methods=["POST"])
 def create():
-    check_csrf()
     username = request.form["username"]
     password1 = request.form["password1"]
     password2 = request.form["password2"]
@@ -152,10 +157,13 @@ def check_csrf():
     if request.form["csrf_token"] != session["csrf_token"]:
         abort(403)
 
+def require_login():
+    if "user_id" not in session:
+        abort(403)
 
 @app.route("/logout")
 def logout():
-    check_csrf()
     del session["user_id"]
+    del session["username"]
     flash("Olet kirjautunut ulos.")
     return redirect("/")
