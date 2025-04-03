@@ -49,6 +49,8 @@ def new_report():
 @app.route("/event/<int:event_id>")
 def show_event(event_id):
     event = events.get_event(event_id)
+    if not event: 
+        abort(404)
     if "user_id" in session:
         user_id = session["user_id"]
     else: user_id = None
@@ -67,7 +69,9 @@ def register():
 @app.route("/event/<int:event_id>/edit")
 def editpage(event_id):
     require_login()
-    event= events.get_event(event_id)
+    event=events.get_event(event_id)
+    if not event: 
+        abort(404)
     killer_username = users.get_username(event[1])
     target_username = users.get_username(event[2])
     return render_template("editevent.html", event=event, killer_username = killer_username, target_username = target_username)

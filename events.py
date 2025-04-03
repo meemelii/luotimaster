@@ -24,7 +24,8 @@ def get_event(event_id):
                 LEFT JOIN Users U ON E.user_id = U.id 
                 LEFT JOIN Users T  ON E.target_id = T.id
                 WHERE E.id = ? """
-    return db.query(sql, [event_id])[0]
+    result = db.query(sql, [event_id])
+    return result[0] if result else None
 
 def get_murders():
     sql = """SELECT e.id, u.username killer_username, t.username target_username, e.zip
