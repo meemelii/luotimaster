@@ -1,12 +1,12 @@
-<!DOCTYPE html>
-<html>
+{% extends "layout.html" %}
+
+{% block title %} Luotimaster {%endblock%}
+
+{% block content %}
+
 
 <head>
   <title>Uusi tapahtuma</title>
-
-
-
-
   {% if session.user_id %}
   <h2>Uusi tapahtuma</h2>
 
@@ -31,5 +31,4 @@
     <a href="/">Etusivulle</a>
   </p>
 
-
-</head>
+  {% endblock %}

@@ -1,17 +1,13 @@
-<!DOCTYPE html>
-<html>
-
 <head>
   <title>Kirjautuminen</title>
 </head>
+{% extends "layout.html" %}
+
+{% block title %} Luotimaster {%endblock%}
+
+{% block content %}
 
 <body>
-  {% for message in get_flashed_messages() %}
-  <p>
-    <b>{{ message }}</b>
-  </p>
-  {% endfor %}
-
 
   {% if session.user_ud %}
   <p>
@@ -42,5 +38,4 @@
   </p>
 
 </body>
-
-</html>
+{% endblock %}

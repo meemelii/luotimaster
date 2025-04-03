@@ -1,11 +1,16 @@
-<!DOCTYPE html>
+
+{% extends "layout.html" %}
+
+{% block title %}Luotimaster{%endblock%}
+
+{% block content %}
+
 {% if event.user_id == session.user_id %}
-<html>
     <head>
         <title>Tapahtuman muokkaus</title>
       </head>
       <body>
-    <h1> TAPAHTUMA </h1>
+    <h1> Tapahtuma </h1>
     <hr />
 
 
@@ -51,4 +56,4 @@
     <p>
 </body>
 
-</html>
+{% endblock %}

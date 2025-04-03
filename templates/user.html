@@ -1,5 +1,10 @@
-<h1>{{ username }}</h1>
+{% extends "layout.html" %}
 
+{% block title %} Profiili: {{username}} {%endblock%}
+
+{% block content %}
+
+<h2>{{ username }}</h2>
 <p>
   Henkiä riistetty: {{ murders | count }} <br />
   Kuolemia: {{ deaths | count }} 
@@ -13,8 +18,9 @@
 {% endif %}
 
 {% for murder in murders %}
+<div class="event">
 <p>
-  <br />
+
   Tapahtumanumero: {{ murder.id }}
   <br />
   {{ murder.killer_username }} tappoi {{ murder.target_username }}
@@ -22,7 +28,8 @@
   sijainnissa {{ murder.zip }}
   {% endif %}<br />
   <a href="/event/{{murder.id}}">Tarkastele tapahtumaa</a>
-{% endfor %}
+</div>
+  {% endfor %}
 
 <h3>Kuolemat: </h3>
 
@@ -31,8 +38,8 @@
 {% endif %}
 
 {% for death in deaths %}
+<div class="event">
 <p>
-  <br />
   Tapahtumanumero: {{ death.id }}
   <br />
   {{ death.killer_username }} tappoi {{ death.target_username }}
@@ -40,10 +47,8 @@
   sijainnissa {{ death.zip }}
   {% endif %}<br />
   <a href="/event/{{death.id}}">Tarkastele tapahtumaa</a>
-{% endfor %}
-
-<hr />
-<p>
-  <a href="/">Etusivulle</a>
-  <p>
+</div>
+  {% endfor %}
 </body>
+
+{% endblock %}

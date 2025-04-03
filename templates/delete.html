@@ -1,10 +1,16 @@
+{% extends "layout.html" %}
+
+{% block title %} Luotimaster {%endblock%}
+
+{% block content %}
+
 {% if event.user_id == user_id %}
 <form action="/event/{{event_id}}/delete" method="POST">
     
   
-  <h1>
-      Haluatko varmasti poistaa seuraavan ilmoituksen:
-    </h1>
+  <h2>
+      Haluatko varmasti poistaa seuraavan ilmoituksen?
+    </h2>
 
     <p>
       Tapahtumanumero: {{ event.id }}<br />
@@ -17,17 +23,17 @@
       
       
       Sijainti: {% if event.zip == None %}
-          Ei tiedossa.
+          Ei tiedossa
       {% else %} 
       {{ event.zip }}
       {% endif %}
       <br />
 
-      Status
+      Status:
       {% if event.confirm_status == 0 %}
-      Ei varmistettu.
+      Ei varmistettu
       {% else %}
-      Varmistettu.
+      Varmistettu
       {% endif %}  
     </p>
     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
@@ -38,3 +44,4 @@
   {% else %}
   <p> Virhe: ei oikeuksia! </p>
   {%endif%}
+  {% endblock %}

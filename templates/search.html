@@ -1,5 +1,9 @@
-<!DOCTYPE html>
-<html>
+
+{% extends "layout.html" %}
+
+
+{% block content %}
+  
 
 <head>
   <title>Haku</title>
@@ -27,6 +31,7 @@
   <ul>
 
     {% for result in results %}
+    <div class="event">
         <li>
           <a href="/event/{{result.id}}">Tapahtuma #{{result.id}}: </a>   
           <br/>
@@ -35,14 +40,12 @@
         Sijainnissa {{result.zip}}
         {% endif %}
     </li>  
-
+  </div>
     {% endfor %}
     </ul>
     {% endif %}
   
 
   <hr />
-  <p>
-    <a href="/">Etusivulle</a>
-    <p>
 </body>
+{% endblock %}

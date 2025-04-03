@@ -1,15 +1,18 @@
-<!DOCTYPE html>
-<html>
+
+{% extends "layout.html" %}
+
+{% block title %} Luotimaster {%endblock%}
+
+{% block content %}
+
     <head>
         <title>Tapahtuma</title>
       </head>
       <body>
-    <h1> T O I M E K S I A N T O </h1>
-    <hr />
 
-
+        <h2>Tapahtuma {{event.id}}</h2>
     <p>
-      Tapahtumanumero: {{ event.id }}<br />
+    
       Tappaja: <a href="/user/{{ event.killer_username }}">{{ event.killer_username }}</a><br /> 
       Kohde:   <a href="/user/{{ event.target_username }}">{{ event.target_username }}</a><br />
       Ase: {{weapon_name}} <br />
@@ -28,17 +31,12 @@
       Varmistettu.
       {% endif %}  
     </p>
-
     {% if event.user_id == user_id %}
     <form action="/event/{{event.id}}/edit">
-      <input type="submit" value="Muokkaa tapahtumaa" /></form> <br />
-
-    <form action="/event/{{event.id}}/delete">
-      <input type="submit" value="Poista tapahtuma" />
+      <input type="submit" value="Muokkaa tapahtumaa" /></form> 
+    <form action="/event/{{event.id}}/delete"><input type="submit" value="Poista tapahtuma" />
     </form>
-
     {% endif %}
-
     {% if event.target_id == user_id %}
     {% if event.confirm_status == 0 %}
     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
@@ -55,15 +53,7 @@
       <input type="submit" value="Peru varmistaminen" />
     </form>
     {% endif %}
-    {% endif %}
-
-    <hr />
-  <br />
-    <a href="/events">Tarkastele tapahtumiasi</a>         
-     | 
-    <a href="/">Etusivulle</a>
+    {% endif %}       
   </p>
-
 </body>
-
-</html>
+{% endblock %}

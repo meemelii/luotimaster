@@ -1,0 +1,66 @@
+body {
+    margin: auto;
+    max-width: 55em;
+    font-family: 'Courier New', Courier, monospace;
+    background-color: rgb(126, 113, 111);
+  }
+  
+    .header {
+    background-color: rgb(33, 2, 2);
+    color: rgb(216, 216, 216);
+    padding: 1em;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif ;
+    margin: 0.5em 0;
+    
+  }
+
+  h1, h2 {
+    margin: 0;
+  }
+
+  .nav {
+    background-color: rgb(237, 160, 160);
+    padding: 0.5em;
+    margin: 0.5em 0;
+  }
+  
+  .content {
+    background-color: rgb(225, 225, 225);
+    padding: 1em;
+    margin: 0.5em 0;
+  }
+
+  .info {
+    border: 2px solid black;
+    margin: 0,5em 0;
+    padding: 1em;
+    background-color: rgb(212, 212, 255);
+    color: rgb(0, 0, 0);
+  }
+  
+
+  nav {
+    text-align: center;
+  }
+  
+  nav ul {
+    padding: 0;
+    margin: 0;
+  }
+  
+  nav li {
+    display: inline-block;
+    padding: 0 1em;
+    margin: 0;
+  }
+  
+  nav li:not(:last-of-type) {
+    border-right: 1px solid rgb(0, 0, 0);
+  }
+
+  .event {
+    border: 2px solid black;
+    margin: 1em;
+    padding: 0.2em 0.5em;
+  }
+
