@@ -52,6 +52,10 @@ def show_event(event_id):
     if "user_id" in session:
         user_id = session["user_id"]
     else: user_id = None
+    if event[5] == 0:
+        require_login()
+        if user_id != event[1] and user_id != event[2]:
+            abort(403)
     weapon_name = name_weapon(event[4])
     return render_template("eventpage.html", event=event, user_id = user_id, weapon_name = weapon_name)
 
@@ -87,13 +91,13 @@ def confirm(event_id):
 @app.route("/event/<int:event_id>/delete", methods=["GET","POST"])
 def delete_event(event_id):
     require_login()
-    check_csrf()
     user_id = session["user_id"]
     event = events.get_event(event_id)
     if request.method == "GET":
         return render_template("delete.html", event_id=event_id, user_id=user_id, event=event)
     if request.method == "POST":
         if "continue" in request.form:
+            check_csrf()
             events.delete_event(event_id)
             flash("Tapahtuma poistettu.")
             return redirect("/events")
