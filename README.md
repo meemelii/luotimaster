@@ -11,14 +11,14 @@ Ohjelmiston tavoitteena olisi mahdollistaa murhien kirjaamisen yksinkertaisesti 
 - Käyttäjä pystyy etsimään kaikkien käyttäjien varmistettuja raportteja hakusanalla.
 - Käyttäjä pystyy varmistamaan muiden käyttäjien tekemiä, häntä koskevia raportteja, tehden niistä murhia.
 - Sovelluksessa on käyttäjäsivut, jotka näyttävät tilastoja ja käyttäjien lisäämät murhat.
-- Käyttäjä pystyy valitsemaan tapahtumalleen asetyypin ja sijainnin. Lisäksi käyttäjät pystyvät lisäämään kuvia tapahtumiin.
+- Käyttäjä pystyy valitsemaan tapahtumalleen asetyypin ja sijainnin. Lisäksi käyttäjät pystyvät lisäämään kuvia tapahtumiin (tai profiilikuviksi).
 
 
-## Sovelluksen nykytilanne (27.3.)
-Sovellus on kaikkea muuta kuin valmis, mutta sen perustoiminnot, ml. tapahtumien raportointi toimii kuin pitäisi:
+## Sovelluksen nykytilanne
 - Kirjautuminen ja rekistöröinti toimivat.
 - Tapahtumien lisääminen, muokkaaminen, poistaminen ja raportointi toimivat. Tapahtumiin voi lisätä postinumeron ja murhatavan. Käyttäjä voi nähdä omat, häneen kohdistetut raportit, sekä kaikkien käyttäjien murhat.
 - Murha-arkistossa on alkeellinen hakutoiminto.
+- Etusivulla näkyy top 5 pelaajaa (murhien määrä). Käyttäjäsivuilla näkyy murhat ja kuolemat eriteltynä.
 
 
 
