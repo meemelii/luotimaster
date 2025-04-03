@@ -45,12 +45,16 @@
 
     {% if event.target_id == user_id %}
     {% if event.confirm_status == 0 %}
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
+
       <form action="/event/{{event.id}}/confirm" method="post">
+        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
         <input type="hidden" name="confirm" value="1">
         <input type="submit" value="Varmista tapahtuma" />
       </form>
     {% else %}
     <form action="/event/{{event.id}}/confirm" method="post">
+      <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
       <input type="hidden" name="confirm" value="0">
       <input type="submit" value="Peru varmistaminen" />
     </form>

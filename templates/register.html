@@ -25,6 +25,8 @@
       Salasana uudestaan: <br />
       <input type="password" name="password2" />
     </p>
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
+
     <input type="submit" value="Luo tunnus" />
   </form>
 

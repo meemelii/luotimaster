@@ -1,6 +1,6 @@
-import sqlite3
+import sqlite3, secrets
 from flask import Flask
-from flask import redirect, render_template, request, session, flash
+from flask import abort, flash, make_response, redirect, render_template, request, session
 from werkzeug.security import generate_password_hash, check_password_hash
 import db, config, events, users
 
@@ -10,7 +10,7 @@ app.secret_key = config.secret_key
 @app.route("/")
 def index():
     try:
-        username=users.get_username(session["user_id"])
+        username=session["username"]
         return render_template("index.html", username=username)
     except: return render_template("index.html")
 
@@ -39,6 +39,7 @@ def report():
 
 @app.route("/new_report", methods=["POST"])
 def new_report():
+    check_csrf()
     target_id = request.form["kohde"]
     event_id = events.add_event(session["user_id"], target_id)
     return redirect("/event/" + str(event_id) + "/edit")
@@ -64,18 +65,21 @@ def editpage(event_id):
 
 @app.route("/event/<int:event_id>/edited", methods=["POST"])
 def edited(event_id):
+    check_csrf()
     zip = request.form["zip"]
     weapon_type = request.form["Asetyyppi"]
     events.edit_event(event_id, zip, weapon_type)
     return redirect("/event/"+ str(event_id))
 
 @app.route("/event/<int:event_id>/confirm", methods=["POST"])
-def confirm(event_id):    
+def confirm(event_id): 
+    check_csrf()   
     events.confirm(event_id, request.form["confirm"])    
     return redirect("/event/"+ str(event_id))
 
 @app.route("/event/<int:event_id>/delete", methods=["GET","POST"])
 def delete_event(event_id):
+    check_csrf()
     user_id = session["user_id"]
     event = events.get_event(event_id)
     if request.method == "GET":
@@ -91,7 +95,7 @@ def delete_event(event_id):
 
 
 def name_weapon(weapon_id):
-#jos aikaa, tee paremmin.
+#if more time, do this better
         if weapon_id==1:return "Foliopuukko / muu lähiase"
         elif weapon_id==2: return "Nerf- tai vesipistooli"
         elif weapon_id==3: return "Ruoka- tai kosketusmyrkky"
@@ -103,6 +107,7 @@ def name_weapon(weapon_id):
 
 @app.route("/create", methods=["POST"])
 def create():
+    check_csrf()
     username = request.form["username"]
     password1 = request.form["password1"]
     password2 = request.form["password2"]
@@ -133,16 +138,24 @@ def login():
         user_id = users.check_login(username, password)
         if user_id:
             session["user_id"] = user_id
+            session["csrf_token"] = secrets.token_hex(16)
+            session["username"] = username
             return redirect("/")
         else:
             flash("VIRHE: väärä tunnus tai salasana")
             filled = {"username": username}
             return render_template("login.html", filled=filled)
 
+def check_csrf():
+    if "csrf_token" not in request.form:
+        abort(403)
+    if request.form["csrf_token"] != session["csrf_token"]:
+        abort(403)
 
 
 @app.route("/logout")
 def logout():
+    check_csrf()
     del session["user_id"]
     flash("Olet kirjautunut ulos.")
     return redirect("/")
