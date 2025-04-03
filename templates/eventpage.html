@@ -10,14 +10,10 @@
 
     <p>
       Tapahtumanumero: {{ event.id }}<br />
-      
-      Tappaja: {{ event.killer_username }}<br />
-      
-      Kohde: {{ event.target_username }}<br />
-
+      Tappaja: <a href="/user/{{ event.killer_username }}">{{ event.killer_username }}</a><br /> 
+      Kohde:   <a href="/user/{{ event.target_username }}">{{ event.target_username }}</a><br />
       Ase: {{weapon_name}} <br />
-      
-      
+        
       Sijainti: {% if event.zip == None %}
           Ei tiedossa.
       {% else %} 

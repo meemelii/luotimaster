@@ -8,7 +8,7 @@ def get_outgoing_events(user_id):
              WHERE E.user_id = ? AND confirm_status = 0
              ORDER BY id DESC """
     return db.query(sql, [user_id])
-#Näissä 2:ssa vielä kehitettävää! mahd. yhdistäminen?
+#Incomings and outgoings need still to be improved
 def get_incoming_events(user_id):
     sql = """SELECT E.*, U.username killer_username, T.username target_username
              FROM Events E
@@ -37,6 +37,25 @@ def get_murders():
              """
     return db.query(sql)
 
+def get_user_murders(user_id):
+    sql = """SELECT e.id, u.username killer_username, t.username target_username, e.zip
+            FROM Events e
+             LEFT JOIN users u ON e.user_id = u.id 
+             LEFT JOIN users t  ON e.target_id = t.id
+             WHERE confirm_status = 1 AND e.user_id = ?
+             ORDER BY e.id DESC
+             """
+    return db.query(sql, [user_id])
+
+def get_user_deaths(user_id):
+    sql = """SELECT e.id, u.username killer_username, t.username target_username, e.zip
+            FROM Events e
+             LEFT JOIN users u ON e.user_id = u.id 
+             LEFT JOIN users t  ON e.target_id = t.id
+             WHERE confirm_status = 1 AND e.target_id = ?
+             ORDER BY e.id DESC
+             """
+    return db.query(sql, [user_id])
 
 def search(query):
     sql = """SELECT e.id, u.username killer_username, t.username target_username, e.zip

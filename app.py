@@ -9,10 +9,11 @@ app.secret_key = config.secret_key
 
 @app.route("/")
 def index():
-    try:
+    murderers = users.get_top5()
+    if "user_id" in session:
         username=session["username"]
-        return render_template("index.html", username=username)
-    except: return render_template("index.html")
+    else: username=None
+    return render_template("index.html", murderers=murderers, username=username)
 
 @app.route("/events")
 def ownevents():
@@ -61,6 +62,15 @@ def show_event(event_id):
     weapon_name = name_weapon(event[4])
     return render_template("eventpage.html", event=event, user_id = user_id, weapon_name = weapon_name)
 
+@app.route("/user/<string:username>")
+def show_user(username):
+    user_id = users.get_user_id(username)
+    if not user_id:
+        abort(404)
+    murders = events.get_user_murders(user_id)
+    deaths = events.get_user_deaths(user_id)
+    return render_template("user.html", username=username, murders=murders, deaths=deaths)
+
 @app.route("/register")
 def register():
     if request.method == "GET":
@@ -72,9 +82,7 @@ def editpage(event_id):
     event=events.get_event(event_id)
     if not event: 
         abort(404)
-    killer_username = users.get_username(event[1])
-    target_username = users.get_username(event[2])
-    return render_template("editevent.html", event=event, killer_username = killer_username, target_username = target_username)
+    return render_template("editevent.html", event=event)
 
 @app.route("/event/<int:event_id>/edited", methods=["POST"])
 def edited(event_id):

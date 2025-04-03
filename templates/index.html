@@ -34,17 +34,30 @@
     <a href="/murders">Murha-arkistot</a>
   </p>
   <hr />
-
-  <p>
-    <a href="/logout">Kirjaudu ulos</a>
-  </p>
-
-
   {% else %}
- 
   <p>
     <p>Et ole kirjautunut sisään.</p>
     <hr />
+  {% endif %}
+
+  {% if murderers | count == 0 %}
+  <p> Kukaan ei ole vielä tiedettävästi tappanut ketään. </p>
+  {% else %}
+
+  <h2> Top 5 pelaajaa: </h2>
+  {% for murderer in murderers %}
+  <a href="/user/{{murderer.username}}">{{murderer.username}}</a> | {{murderer.kills}} varmistettua murhaa
+  <br />
+  {% endfor %}
+  {% endif %}
+  <hr />
+
+  {% if session.user_id %}
+  <p>
+    <a href="/logout">Kirjaudu ulos</a>
+  </p>
+  {% else %}
+
     <a href="/login">Kirjaudu sisään</a>
     <a href="/register">Luo tunnus</a>
   </p> 

@@ -13,9 +13,9 @@
     <p>
         Tapahtumanumero: {{ event.id }}<br />
       
-        Tappaja: {{ killer_username }}<br />
+        Tappaja: {{ event.killer_username }}<br />
       
-        Kohde: {{ target_username }}<br />
+        Kohde: {{ event.target_username }}<br />
 
 
         <form action="/event/{{event.id}}/edited" method="post">
