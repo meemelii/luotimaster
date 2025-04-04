@@ -2,27 +2,86 @@ body {
     margin: auto;
     max-width: 55em;
     font-family: 'Courier New', Courier, monospace;
-    background-color: rgb(126, 113, 111);
+    background-color: rgb(123, 95, 55);
   }
   
+  .upperbar {
+    background-color: rgb(163, 149, 134);
+    margin: 0;
+    padding: 0 ;
+    overflow: hidden;
+  }
+
+
     .header {
-    background-color: rgb(33, 2, 2);
-    color: rgb(216, 216, 216);
-    padding: 1em;
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif ;
-    margin: 0.5em 0;
+    color: rgb(0, 0, 0);
+    font-family: 'Times New Roman', Times, serif;
+    margin: -1em;
+    position: relative;
+    bottom: 5px;
+    left: -10px;
     
+  }
+
+  .luotimasterlogo {
+    width:50px;
+    position: relative;
+    bottom: -5px
+  }
+
+  upperbar ul {
+    padding: 0.5 0 0.5em 0;
+    margin: 0;
+  }
+  upperbar li {
+    display: inline flex;
+    padding: 0 1em;
+    margin: 0;
   }
 
   h1, h2 {
     margin: 0;
   }
 
+
   .nav {
-    background-color: rgb(237, 160, 160);
-    padding: 0.5em;
-    margin: 0.5em 0;
+    margin: 0;
   }
+
+  upperbar nav {
+    position: relative;
+    bottom: 12.5px;
+    right: -17.5em;
+    
+  }
+
+  nav ul {
+    padding: 0;
+    margin: 0;
+  }
+  
+  nav li {  
+    padding: 0 0.5em;
+    margin: 0;
+  }
+
+  nav a{
+    border: 1px solid rgb(0, 0, 0);
+    margin: 0.5;
+    text-decoration: None;
+    color:rgb(0, 0, 0);
+  }
+  nav a:hover{
+    font-weight: bolder;
+  }
+  .info {
+    border: 2px solid rgb(0, 0, 0);
+    margin: 0,5em 0;
+    padding: 1em;
+    background-color: rgb(211, 146, 146);
+    color: rgb(0, 0, 0);
+  }
+  
   
   .content {
     background-color: rgb(225, 225, 225);
@@ -30,33 +89,8 @@ body {
     margin: 0.5em 0;
   }
 
-  .info {
-    border: 2px solid black;
-    margin: 0,5em 0;
-    padding: 1em;
-    background-color: rgb(212, 212, 255);
-    color: rgb(0, 0, 0);
-  }
-  
 
-  nav {
-    text-align: center;
-  }
-  
-  nav ul {
-    padding: 0;
-    margin: 0;
-  }
-  
-  nav li {
-    display: inline-block;
-    padding: 0 1em;
-    margin: 0;
-  }
-  
-  nav li:not(:last-of-type) {
-    border-right: 1px solid rgb(0, 0, 0);
-  }
+
 
   .event {
     border: 2px solid black;

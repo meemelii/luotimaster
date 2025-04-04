@@ -5,9 +5,9 @@
 {% block content %}
 
 
-<head>
-  <title>Uusi tapahtuma</title>
+  <body>
   {% if session.user_id %}
+
   <h2>Uusi tapahtuma</h2>
 
   <form action="/new_report" method="post">
@@ -26,9 +26,5 @@
   </form>
   <hr />
   {% endif %}
-
-  <p>
-    <a href="/">Etusivulle</a>
-  </p>
-
+</body>
   {% endblock %}

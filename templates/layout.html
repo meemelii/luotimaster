@@ -6,25 +6,31 @@
 </head>
 
 <body>
-  <div class="header">
-    <h1>Luotimaster</h1>
-  </div>
-
-  <div class="nav">
-    <nav>
+  <div class="upperbar">
+    <upperbar>
       <ul>
-        <li><a href="/">Etusivu</a></li>
-        
-        {% if session.user_id %}
-        <li><a href="/user/{{session.username}}">Oma profiili</a></li>
-        <li><a href="/logout">Kirjaudu ulos</a></li>
-        {% else %}
-        <li><a href="/register">Luo tunnus</a></li>
-        <li><a href="/login">Kirjaudu sisään</a></li>
-        {% endif %}
-      </ul>
-    </nav>
-  </div>
+      <li><a href="/"><img class="luotimasterlogo" src="static/luotimasterlogo.png" alt="Luotimasterin logo"/></a></li>
+      <li><div class="header"><h1>Luotimaster</h1></div></li>
+      <li><div class="nav">
+        <nav>
+          <ul>
+            {% if session.user_id %}
+            <li><a href="/user/{{session.username}}">Oma profiili</a></li>
+            <li><a href="/logout">Kirjaudu ulos</a></li>
+            {% else %}
+            <li><a href="/register">Luo tunnus</a></li>
+            <li><a href="/login">Kirjaudu sisään</a></li>
+            {%endif%}
+          </ul>
+          </nav>
+        </li>
+        </div> 
+        </ul>
+      </upperbar>
+      </div>    
+
+
+  
 
   {% for message in get_flashed_messages() %}
   <p class="info">

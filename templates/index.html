@@ -1,13 +1,9 @@
 {% extends "layout.html" %}
 {% block title %} Luotimaster {%endblock%}
 {% block content %}
-<head>
-  <title>Etusivu</title>
-</head>
+
 
 <body>
-
-
   {% if session.user_id %}
   <p>
     Hei <b>{{ username }}</b>!

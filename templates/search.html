@@ -1,13 +1,10 @@
 
 {% extends "layout.html" %}
-
-
+{% block title %} Luotimaster {%endblock%}
 {% block content %}
   
 
-<head>
-  <title>Haku</title>
-</head>
+
 
 <body>
     <h2>Haku</h2>
@@ -28,21 +25,21 @@
   {% if query %}
   <hr />
   <h2>Tulokset:</h2>
-  <ul>
+
 
     {% for result in results %}
     <div class="event">
-        <li>
+        <ul>
           <a href="/event/{{result.id}}">Tapahtuma #{{result.id}}: </a>   
           <br/>
         {{ result.killer_username }} tappoi {{ result.target_username }}
         {% if result.zip %}
         Sijainnissa {{result.zip}}
         {% endif %}
-    </li>  
+        </ul>  
   </div>
     {% endfor %}
-    </ul>
+
     {% endif %}
   
 
