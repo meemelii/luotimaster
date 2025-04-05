@@ -12,3 +12,17 @@ CREATE TABLE events (
     weapon_type INTEGER,
     confirm_status BIT
 );
+
+CREATE TABLE details (
+    id INTEGER PRIMARY KEY,
+    title TEXT,
+    info TEXT
+);
+
+
+CREATE TABLE event_details (
+    id INTEGER PRIMARY KEY,
+    event_id REFERENCES events,
+    title TEXT,
+    info TEXT
+);

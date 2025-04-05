@@ -55,12 +55,13 @@ def show_event(event_id):
     if "user_id" in session:
         user_id = session["user_id"]
     else: user_id = None
-    if event[5] == 0:
+    if event[4] == 0:
         require_login()
         if user_id != event[1] and user_id != event[2]:
             abort(403)
-    weapon_name = name_weapon(event[4])
-    return render_template("eventpage.html", event=event, user_id = user_id, weapon_name = weapon_name)
+    
+    details = events.get_details(event_id)
+    return render_template("eventpage.html", event=event, user_id = user_id, details = details)
 
 @app.route("/user/<string:username>")
 def show_user(username):
@@ -80,17 +81,19 @@ def register():
 def editpage(event_id):
     require_login()
     event=events.get_event(event_id)
+    details=events.get_details(event_id)
+    weapontypes = events.get_weapontypes()
     if not event: 
         abort(404)
-    return render_template("editevent.html", event=event)
+    return render_template("editevent.html", event=event, details=details, weapontypes=weapontypes)
 
 @app.route("/event/<int:event_id>/edited", methods=["POST"])
 def edited(event_id):
     require_login()
     check_csrf()
     zip = request.form["zip"]
-    weapon_type = request.form["Asetyyppi"]
-    events.edit_event(event_id, zip, weapon_type)
+    weapontype = request.form["weapontype"]
+    events.edit_event(event_id, zip, weapontype)
     return redirect("/event/"+ str(event_id))
 
 @app.route("/event/<int:event_id>/confirm", methods=["POST"])
@@ -114,17 +117,6 @@ def delete_event(event_id):
             flash("Tapahtuma poistettu.")
             return redirect("/events")
         else: return redirect("/events/"+ str(event_id))
-
-
-def name_weapon(weapon_id):
-#if more time, do this better
-        if weapon_id==1:return "Foliopuukko / muu lähiase"
-        elif weapon_id==2: return "Nerf- tai vesipistooli"
-        elif weapon_id==3: return "Ruoka- tai kosketusmyrkky"
-        elif weapon_id==4: return "Tappava eläin" 
-        elif weapon_id==5: return "Pommi tai muu ansa"
-        elif weapon_id==6: return "Muu/luokittelematon"
-        else: return "Ei tiedossa" 
 
 
 @app.route("/create", methods=["POST"])

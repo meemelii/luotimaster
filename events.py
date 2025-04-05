@@ -19,13 +19,26 @@ def get_incoming_events(user_id):
     return db.query(sql, [user_id])
 
 def get_event(event_id):
-    sql = """SELECT E.*, U.username killer_username, T.username target_username
+    sql = """SELECT E.id, E.user_id, E.target_id, E.zip, E.confirm_status, U.username killer_username, T.username target_username
                 FROM Events E
                 LEFT JOIN Users U ON E.user_id = U.id 
                 LEFT JOIN Users T  ON E.target_id = T.id
                 WHERE E.id = ? """
     result = db.query(sql, [event_id])
     return result[0] if result else None
+
+def get_details(event_id):
+    sql = """SELECT title, info
+            FROM event_details
+            WHERE event_id = ?
+    """
+    return db.query(sql, [event_id])[0]
+
+def get_weapontypes():
+    sql = """SELECT title, info
+            FROM details
+            WHERE title = 'weapontype' """
+    return db.query(sql)
 
 def get_murders():
     sql = """SELECT e.id, u.username killer_username, t.username target_username, e.zip
@@ -69,18 +82,22 @@ def search(query):
 
 
 def add_event(user_id, target_id):
-    sql = "INSERT INTO events (user_id, target_id, zip, weapon_type, confirm_status) VALUES (?, ?, NULL, NULL, 0)"
+    sql = "INSERT INTO events (user_id, target_id, zip, confirm_status) VALUES (?, ?, NULL, 0)"
     db.execute(sql, [user_id, target_id])
     event_id = db.last_insert_id()
+    sql = "INSERT INTO Event_details (event_id, title, info) VALUES (?, 'weapontype', 'Luokittelematon') "
+    db.execute(sql, [event_id])
+    
     return event_id
 
-def edit_event(event_id, zip_code, weapon_type):
+def edit_event(event_id, zip_code, weapontype):
     if zip_code != None:
         sql = "UPDATE Events SET zip = ? WHERE id = ?"
         db.execute(sql, [zip_code, event_id])
-    if weapon_type != None:
-        sql = "UPDATE Events SET weapon_type = ? WHERE id = ?"
-        db.execute(sql, [weapon_type, event_id])
+    sql = "DELETE FROM Event_details WHERE event_id = ?"
+    db.execute(sql, [event_id])
+    sql = "INSERT INTO Event_details (event_id, title, info) VALUES (?, 'weapontype', ?) "
+    db.execute(sql, [event_id, weapontype])
 
 def confirm(event_id, confirm_status):
     sql = "UPDATE Events SET confirm_status = ? WHERE id = ?"
@@ -89,5 +106,6 @@ def confirm(event_id, confirm_status):
 def delete_event(event_id):
     sql = "DELETE FROM Events WHERE id = ?"
     db.execute(sql, [event_id])
-
+    sql = "DELETE FROM Event.details WHERE id = ?"
+    db.execute(sql, [event_id])
 

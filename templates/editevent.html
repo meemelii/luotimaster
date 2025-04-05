@@ -7,32 +7,29 @@
 
 {% if event.user_id == session.user_id %}
       <body>
-    <h1> Tapahtuma </h1>
+    <h2> Tapahtuma </h2>
     <hr />
-
-
-
-    <p>
-        Tapahtumanumero: {{ event.id }}<br />
+    
+    <p>  Tapahtumanumero: {{ event.id }}<br />
       
-        Tappaja: {{ event.killer_username }}<br />
+        Tappaja: {{ event.killer_username }}  <br />  
       
-        Kohde: {{ event.target_username }}<br />
-
-
+        Kohde: {{ event.target_username }}</p>
+    
+        
         <form action="/event/{{event.id}}/edited" method="post">
             <p>
               Murhapaikka (postinumero): <br />
               <input type="text" name="zip" {% if event.zip != None %} value="{{event.zip}}" {% endif %} maxlength="5" minlength="5" />
             </p>
             <label for="weapontype">Asetyyppi:</label><br />
-            <select id="Asetyyppi" name="Asetyyppi">
-            <option value="1">Foliopuukko / muu lähiase</option>
-            <option value="2">Nerf- tai vesipistooli</option>
-            <option value="3">Ruoka- tai kosketusmyrkky</option>
-            <option value="4">Tappava eläin</option>
-            <option value="5">Pommi tai muu ansa</option>
-            <option value="6">Muu/luokittelematon</option>
+              <select name="weapontype">
+              {% for weapon in weapontypes %}
+              {% if weapon.info == details.info %}
+              <option value="{{ weapon.info }}"selected>{{ weapon.info}}</option>
+              {%endif%}
+              <option value="{{ weapon.info }}">{{ weapon.info }}</option>
+              {% endfor %}
             </select>
             <br />  
     
@@ -41,16 +38,12 @@
           </form>
         
         <br />  
-  </p>
+  
 
   {% else %}
   <p> Virhe: ei oikeuksia! </p>
 
   {% endif %}
 
-  <p>
-    <a href="/">Etusivulle</a>
-    <p>
-</body>
 
 {% endblock %}
