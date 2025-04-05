@@ -30,7 +30,14 @@
     <p>
       Tapahtumanumero: {{ murder.id }}
       <br />
-      {{ murder.killer_username }} tappoi {{ murder.target_username }}
+      {{ murder.killer_username }} 
+      {% if murder.describe %} 
+      {{murder.describe}} 
+      {% else %} 
+      taikoi kuoliaaksi  
+      {% endif %} 
+      {{ murder.target_username }}
+
       {% if murder.zip %}
       sijainnissa {{ murder.zip }}
       {% endif %}<br />

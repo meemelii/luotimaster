@@ -8,10 +8,13 @@
   <body>
   {% if session.user_id %}
 
-  <h2>Uusi tapahtuma</h2>
+  <h2>Ilmoita tapahtumasta</h2>
 
   <form action="/new_report" method="post">
     <p>
+      {% if kohteet | count == 0 %}
+          Olet ainoa käyttäjä tietokannassa. Suosittelen kutsumaan ystäväsi käyttäjiksi, jotta voit murhata heidät!
+      {% else %}
       Kenet olet eliminoinut?
     </br>
       <label for="kohde">
@@ -19,6 +22,7 @@
         {% for kohde in kohteet %}
         <option value="{{ kohde[0] }}">{{ kohde[1] }}</option>
         {% endfor %}
+        
       </select>
     </p>
     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
@@ -26,5 +30,7 @@
   </form>
   <hr />
   {% endif %}
+  {% endif %}
+  
 </body>
-  {% endblock %}
+{% endblock %}

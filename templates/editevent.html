@@ -27,8 +27,9 @@
               {% for weapon in weapontypes %}
               {% if weapon.info == details.info %}
               <option value="{{ weapon.info }}"selected>{{ weapon.info}}</option>
-              {%endif%}
+              {% else %}
               <option value="{{ weapon.info }}">{{ weapon.info }}</option>
+              {% endif %}
               {% endfor %}
             </select>
             <br />  

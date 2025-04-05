@@ -23,7 +23,13 @@
 
   Tapahtumanumero: {{ murder.id }}
   <br />
-  {{ murder.killer_username }} tappoi {{ murder.target_username }}
+  {{ murder.killer_username }} 
+  {% if murder.describe %} 
+  {{murder.describe}} 
+  {% else %} 
+  taikoi kuoliaaksi  
+  {% endif %} 
+  {{ murder.target_username }}
   {% if murder.zip %}
   sijainnissa {{ murder.zip }}
   {% endif %}<br />
@@ -42,7 +48,13 @@
 <p>
   Tapahtumanumero: {{ death.id }}
   <br />
-  {{ death.killer_username }} tappoi {{ death.target_username }}
+  {{ death.killer_username }} tappoi 
+  {% if death.describe %} 
+  {{death.describe}} 
+  {% else %} 
+  taikoi kuoliaaksi  
+  {% endif %} 
+  {{ death.target_username }}
   {% if death.zip %}
   sijainnissa {{ death.zip }}
   {% endif %}<br />

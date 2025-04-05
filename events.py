@@ -28,11 +28,13 @@ def get_event(event_id):
     return result[0] if result else None
 
 def get_details(event_id):
-    sql = """SELECT title, info
-            FROM event_details
-            WHERE event_id = ?
+    sql = """SELECT ED.title title, ED.info info, D.describe describe
+            FROM Event_details ED
+            LEFT JOIN Details D ON ED.info = D.info
+            WHERE ED.event_id = ?
     """
-    return db.query(sql, [event_id])[0]
+    result = db.query(sql, [event_id])
+    return result[0] if result else None
 
 def get_weapontypes():
     sql = """SELECT title, info
@@ -41,20 +43,24 @@ def get_weapontypes():
     return db.query(sql)
 
 def get_murders():
-    sql = """SELECT e.id, u.username killer_username, t.username target_username, e.zip
-            FROM Events e
-             LEFT JOIN users u ON e.user_id = u.id 
-             LEFT JOIN users t  ON e.target_id = t.id
+    sql = """SELECT E.id, U.username killer_username, T.username target_username, E.zip, D.describe describe
+            FROM Events E
+             LEFT JOIN Users U ON E.user_id = U.id 
+             LEFT JOIN Users T  ON E.target_id = T.id
+             LEFT JOIN Event_details ED ON E.id = ED.event_id
+             LEFT JOIN details D ON ED.info = D.info
              WHERE confirm_status = 1
-             ORDER BY e.id DESC
+             ORDER BY E.id DESC
              """
     return db.query(sql)
 
 def get_user_murders(user_id):
-    sql = """SELECT e.id, u.username killer_username, t.username target_username, e.zip
+    sql = """SELECT e.id, u.username killer_username, t.username target_username, e.zip,  D.describe describe
             FROM Events e
              LEFT JOIN users u ON e.user_id = u.id 
              LEFT JOIN users t  ON e.target_id = t.id
+             LEFT JOIN Event_details ED ON E.id = ED.event_id
+             LEFT JOIN Details D ON ED.info = D.info
              WHERE confirm_status = 1 AND e.user_id = ?
              ORDER BY e.id DESC
              """

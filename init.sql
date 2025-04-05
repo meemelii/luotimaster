@@ -1,8 +1,8 @@
 
-INSERT INTO details (title, info) VALUES ('weapontype', 'Foliopuukko / muu lähiase');
-INSERT INTO details (title, info) VALUES ('weapontype', 'Nerf- tai vesipistooli');
-INSERT INTO details (title, info) VALUES ('weapontype', 'Ruoka- tai kosketusmyrkky');
-INSERT INTO details (title, info) VALUES ('weapontype', 'Tappava eläin');
-INSERT INTO details (title, info) VALUES ('weapontype', 'Pommi tai muu ansa');
-INSERT INTO details (title, info) VALUES ('weapontype', 'Luokittelematon');
+INSERT INTO details (title, info, describe) VALUES ('weapontype', 'Foliopuukko / muu lähiase', 'puukotti');
+INSERT INTO details (title, info, describe) VALUES ('weapontype', 'Nerf- tai vesipistooli', 'ampui');
+INSERT INTO details (title, info, describe) VALUES ('weapontype', 'Ruoka- tai kosketusmyrkky', 'myrkytti');
+INSERT INTO details (title, info, describe) VALUES ('weapontype', 'Tappava eläin', 'asetti luonnon armoille');
+INSERT INTO details (title, info, describe) VALUES ('weapontype', 'Pommi', 'räjäytti säpäleiksi');
+INSERT INTO details (title, info, describe) VALUES ('weapontype', 'Luokittelematon', 'tappoi');
 

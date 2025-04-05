@@ -28,11 +28,12 @@
     <hr />
   {% endif %}
 
+  <h2> Top 5 pelaajaa: </h2>
+
   {% if murderers | count == 0 %}
   <p> Kukaan ei ole vielä tiedettävästi tappanut ketään. </p>
   {% else %}
 
-  <h2> Top 5 pelaajaa: </h2>
   {% for murderer in murderers %}
   <a href="/user/{{murderer.username}}">{{murderer.username}}</a> | {{murderer.kills}} varmistettua murhaa
   <br />

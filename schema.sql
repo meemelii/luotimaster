@@ -9,14 +9,14 @@ CREATE TABLE events (
     user_id INTEGER REFERENCES users,
     target_id INTEGER REFERENCES users,
     zip TEXT,
-    weapon_type INTEGER,
     confirm_status BIT
 );
 
 CREATE TABLE details (
     id INTEGER PRIMARY KEY,
     title TEXT,
-    info TEXT
+    info TEXT,
+    describe TEXT
 );
 
 
