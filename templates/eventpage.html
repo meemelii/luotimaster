@@ -5,16 +5,12 @@
 
 {% block content %}
 
-    <head>
-        <title>Tapahtuma</title>
-      </head>
+
       <body>
 
         <h2>Tapahtuma {{event.id}}</h2>
+      <hr />
     <p>
-    
-
-
       Tappaja: <a href="/user/{{ event.killer_username }}">{{ event.killer_username }}</a><br /> 
       
       Kohde:   <a href="/user/{{ event.target_username }}">{{ event.target_username }}</a><br />
@@ -39,6 +35,8 @@
       <input type="submit" value="Muokkaa tapahtumaa" /></form> 
     <form action="/event/{{event.id}}/delete"><input type="submit" value="Poista tapahtuma" />
     </form>
+    <hr />
+    <a href="/events">Omiin tapahtumiin</a>
     {% endif %}
     {% if event.target_id == user_id %}
     {% if event.confirm_status == 0 %}
@@ -56,7 +54,13 @@
       <input type="submit" value="Peru varmistaminen" />
     </form>
     {% endif %}
+    <hr />
+    <a href="/events">Omiin tapahtumiin</a> |
     {% endif %}       
+    <a href="/murders">Murha-arkistoon</a>
   </p>
+  
+  
+
 </body>
 {% endblock %}

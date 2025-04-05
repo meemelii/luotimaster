@@ -33,7 +33,7 @@
 <div class="event">
 <p>
 
-  Tapahtumanumero: {{ murder.id }}
+  Tapahtuma #{{ murder.id }}:
   <br />
   {{ murder.killer_username }} 
   {% if murder.describe %} 
@@ -58,14 +58,16 @@
 {% for death in deaths %}
 <div class="event">
 <p>
-  Tapahtumanumero: {{ death.id }}
+  Tapahtuma #{{ death.id }}
   <br />
   {{ death.killer_username }} tappoi 
+
   {% if death.describe %} 
   {{death.describe}} 
   {% else %} 
   taikoi kuoliaaksi  
   {% endif %} 
+  
   {{ death.target_username }}
   {% if death.zip %}
   sijainnissa {{ death.zip }}

@@ -20,7 +20,10 @@ body {
     position: relative;
     bottom: 5px;
     left: -10px;
-    
+  }
+
+  upperbar a {
+    text-decoration: none;
   }
 
   upperbar ul {
@@ -66,7 +69,12 @@ body {
     color:rgb(0, 0, 0);
   }
   nav a:hover{
+    color:rgb(0, 0, 0);
     font-weight: bolder;
+  }
+  nav a:visited{
+    color:black
+
   }
   .info {
     border: 2px solid rgb(0, 0, 0);
@@ -97,4 +105,8 @@ body {
   .profilepic {
     width:200px;
     border: 5px double rgb(0, 0, 0);
+  }
+
+  a:visited {
+    color:blue
   }
