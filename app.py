@@ -64,20 +64,6 @@ def show_event(event_id):
     details = events.get_details(event_id)
     return render_template("eventpage.html", event=event, user_id = user_id, details = details)
 
-@app.route("/user/<string:username>")
-def show_user(username):
-    user_id = users.get_user_id(username)
-    if not user_id:
-        abort(404)
-    murders = events.get_user_murders(user_id)
-    deaths = events.get_user_deaths(user_id)
-    return render_template("user.html", username=username, murders=murders, deaths=deaths)
-
-@app.route("/register")
-def register():
-    if request.method == "GET":
-        return render_template("register.html", filled={})
-
 @app.route("/event/<int:event_id>/edit")
 def editpage(event_id):
     require_login()
@@ -118,6 +104,52 @@ def delete_event(event_id):
             flash("Tapahtuma poistettu.")
             return redirect("/events")
         else: return redirect("/events/"+ str(event_id))
+
+@app.route("/user/<string:username>")
+def show_user(username):
+    user_id = users.get_user_id(username)
+    user = users.get_user(user_id)
+    if not user:
+        abort(404)
+    murders = events.get_user_murders(user[0])
+    deaths = events.get_user_deaths(user[0])
+    return render_template("user.html", user=user, murders=murders, deaths=deaths)
+
+@app.route("/add_image", methods=["GET", "POST"])
+def add_image():
+    require_login()
+    if request.method == "GET":
+        return render_template("add_image.html")
+    if request.method == "POST":
+        check_csrf()  
+        file = request.files["image"]
+        if not file.filename.endswith(".jpg"):
+            flash("VIRHE: väärä tiedostomuoto")
+            return redirect("/add_image")
+        image=file.read()
+        if len(image) > 100 * 1024:
+            flash("VIRHE: liian suuri kuva")
+            return redirect("/add_image")
+        user_id = session["user_id"]
+        username = session["username"]
+        users.update_image(user_id, image)
+        flash("Kuvan lisäys onnistui!")
+        return redirect("/user/" + username)
+
+@app.route("/image/<string:username>")
+def show_image(username):
+    user_id = users.get_user_id(username)
+    image = users.get_image(user_id)
+    if not image:
+        abort(404)
+    response = make_response(bytes(image))
+    response.headers.set("Content-Type", "image/jpeg")
+    return response
+
+@app.route("/register")
+def register():
+    if request.method == "GET":
+        return render_template("register.html", filled={})
 
 
 @app.route("/create", methods=["POST"])

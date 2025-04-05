@@ -4,7 +4,19 @@
 
 <body>
 
-<h2>{{ username }}</h2>
+<h2>{{ user.username }}</h2>
+
+{% if user.has_image %}
+<img class="profilepic" src="/image/{{ user.username }}" />
+{% endif %}
+
+
+{% if user.id == session.user_id %}
+<p>
+  <a href="/add_image">Lisää profiilikuva</a>
+</p>
+{% endif %}
+
 <p>
   Henkiä riistetty: {{ murders | count }} <br />
   Kuolemia: {{ deaths | count }} 
@@ -14,7 +26,7 @@
 
 
 {% if murders | count == 0 %}
-<p> Ei varmistettuja tappoja. {{ username }} on kovin viaton!</p>
+<p> Ei varmistettuja tappoja. {{ user.username }} on kovin viaton!</p>
 {% endif %}
 
 {% for murder in murders %}
@@ -40,7 +52,7 @@
 <h3>Kuolemat: </h3>
 
 {% if deaths | count == 0 %}
-<p> Ei varmistettuja kuolemia. {{ username }} elää! </p>
+<p> Ei varmistettuja kuolemia. {{ user.username }} elää! </p>
 {% endif %}
 
 {% for death in deaths %}

@@ -16,19 +16,32 @@ def check_login(username, password):
             return user_id
     return None
 
-def get_username(user_id):
-    sql = """SELECT username FROM users WHERE id = ?"""
+def get_user(user_id):
+    sql = """SELECT id, username, image IS NOT NULL has_image 
+            FROM users 
+            WHERE id = ?"""
     result = db.query(sql, [user_id])
     return result[0] if result else None
 
 def get_user_id(username):
-    sql = """SELECT id FROM users WHERE username = ?"""
-    result = db.query(sql, [username])[0]
-    return result[0] if result else None
+    sql = """SELECT id
+            FROM users 
+            WHERE username = ?"""
+    result = db.query(sql, [username])
+    return result[0][0] if result else None
 
 def get_other_users(user_id):
     sql = """SELECT id, username FROM users WHERE id != ?"""
     return db.query(sql, [user_id])
+
+def update_image(user_id, image):
+    sql = "UPDATE users SET image = ? WHERE id = ?"
+    db.execute(sql, [image, user_id])
+    
+def get_image(user_id):
+    sql = "SELECT image FROM users WHERE id = ?"
+    result = db.query(sql, [user_id])
+    return result[0][0] if result else None
 
 def get_top5():
     sql = """SELECT username, COUNT(e.id) kills
