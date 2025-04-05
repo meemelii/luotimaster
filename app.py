@@ -45,6 +45,7 @@ def new_report():
     check_csrf()
     target_id = request.form["kohde"]
     event_id = events.add_event(session["user_id"], target_id)
+    flash("Tapahtuma luotu! Voit halutessasi antaa lisätietoja tapahtumasta.")
     return redirect("/event/" + str(event_id) + "/edit")
 
 @app.route("/event/<int:event_id>")

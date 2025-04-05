@@ -8,11 +8,6 @@
 </head>
 
 <body>
-  {% for message in get_flashed_messages() %}
-  <p>
-    <b>{{ message }}</b>
-  </p>
-  {% endfor %}
 
   <form action="/create" method="post">
     <p>
