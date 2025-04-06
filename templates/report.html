@@ -16,14 +16,13 @@
           Olet ainoa käyttäjä tietokannassa. Suosittelen kutsumaan ystäväsi käyttäjiksi, jotta voit murhata heidät!
       {% else %}
       Kenet olet eliminoinut?
-    </br>
+      </br>
       <label for="kohde">
         <select id="kohde" name="kohde">
-        {% for kohde in kohteet %}
-        <option value="{{ kohde[0] }}">{{ kohde[1] }}</option>
-        {% endfor %}
-        
-      </select>
+          {% for kohde in kohteet %}
+          <option value="{{ kohde[0] }}">{{ kohde[1] }}</option>
+         {% endfor %}
+        </select>
     </p>
     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
     <input type="submit" value="Ilmoita!" />
