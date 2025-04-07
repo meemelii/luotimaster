@@ -42,7 +42,14 @@ def get_weapontypes():
             WHERE title = 'weapontype' """
     return db.query(sql)
 
-def get_murders():
+def get_murder_count():
+    sql = """SELECT COUNT(E.id)
+            FROM Events E
+            WHERE confirm_status =1
+            """
+    return db.query(sql)[0][0]
+
+def get_murders(page, page_size):
     sql = """SELECT E.id, U.username killer_username, T.username target_username, E.zip, D.describe describe
             FROM Events E
              LEFT JOIN Users U ON E.user_id = U.id 
@@ -51,8 +58,11 @@ def get_murders():
              LEFT JOIN details D ON ED.info = D.info
              WHERE confirm_status = 1
              ORDER BY E.id DESC
+             LIMIT ? OFFSET ?
              """
-    return db.query(sql)
+    limit = page_size
+    offset = page_size * (page -1)
+    return db.query(sql, [limit, offset])
 
 def get_user_murders(user_id):
     sql = """SELECT e.id, u.username killer_username, t.username target_username, e.zip,  D.describe describe

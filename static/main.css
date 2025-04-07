@@ -9,9 +9,19 @@ body {
     background-color: rgb(163, 149, 134);
     margin: 0;
     padding: 0 ;
-    overflow: hidden;
+    
+    
   }
 
+  upperbar ul {
+    padding: 0.5 0 0.5em 0;
+    margin: 0;
+    list-style-type: none;
+  }
+  upperbar li {
+    padding: 0 1em;
+    margin: 0;
+  }
 
     .header {
     color: rgb(0, 0, 0);
@@ -22,33 +32,26 @@ body {
     left: -10px;
   }
 
-  upperbar a {
+  .headerandlogo {
+    margin: 0 -1em;
+  }
+  headerandlogo a {
     text-decoration: none;
   }
 
-  upperbar ul {
-    padding: 0.5 0 0.5em 0;
+  headerandlogo ul{
     margin: 0;
   }
-  upperbar li {
-    display: inline flex;
-    padding: 0 1em;
-    margin: 0;
+  headerandlogo li{
+    display:inline flex
   }
-
-  h1, h2 {
-    margin: 0;
-  }
-
   .nav {
     margin: 0;
   }
 
-  upperbar nav {
-    position: relative;
-    bottom: 12.5px;
-    right: -17.5em;
-    
+  .nav:first-child{
+    float: right;
+    margin: -2.5em 0;
   }
 
   nav ul {
@@ -56,7 +59,8 @@ body {
     margin: 0;
   }
   
-  nav li {  
+  nav li { 
+    display: inline flex; 
     padding: 0 0.5em;
     margin: 0;
     border: 5px double rgb(0, 0, 0);
@@ -82,8 +86,7 @@ body {
     padding: 1em;
     background-color: rgb(208, 138, 138);
     color: rgb(0, 0, 0);
-  }
-  
+  }  
   
   .content {
     background-color: rgb(225, 225, 225);
@@ -105,6 +108,10 @@ body {
   .profilepic {
     width:200px;
     border: 5px double rgb(0, 0, 0);
+  }
+
+  h1, h2 {
+    margin: 0;
   }
 
   a:visited {

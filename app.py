@@ -1,4 +1,4 @@
-import sqlite3, secrets
+import sqlite3, secrets, math
 from flask import Flask
 from flask import abort, flash, make_response, redirect, render_template, request, session
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -17,18 +17,30 @@ def index():
 
 @app.route("/events")
 def ownevents():
+    #need to pageniate
     user_id = session["user_id"]
     outgoing_events = events.get_outgoing_events(user_id)
     incoming_events = events.get_incoming_events(user_id)
     return render_template("ownevents.html", incoming_events=incoming_events, outgoing_events=outgoing_events)
 
 @app.route("/murders")
-def murders():
-    murders=events.get_murders()
-    return render_template("murders.html", murders=murders)
+@app.route("/murders/<int:page>")
+def murders(page=1):
+    page_size = 10
+    murder_count = events.get_murder_count()
+    page_count = math.ceil(murder_count / page_size)
+    page_count = max(page_count, 1)
+
+    if page < 1:
+        return redirect("/murders")
+    if page > page_count:
+        return redirect("/murders/" + str(page_count))
+    murders=events.get_murders(page, page_size)
+    return render_template("murders.html", page=page, page_count=page_count, murders=murders)
 
 @app.route("/search")
 def search():
+    #need to pageniate
     query = request.args.get("query")
     results = events.search(query) if query else []
     return render_template("search.html", query=query, results=results)
@@ -107,6 +119,7 @@ def delete_event(event_id):
 
 @app.route("/user/<string:username>")
 def show_user(username):
+    #need to pageniate?
     user_id = users.get_user_id(username)
     user = users.get_user(user_id)
     if not user:
