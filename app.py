@@ -39,11 +39,19 @@ def murders(page=1):
     return render_template("murders.html", page=page, page_count=page_count, murders=murders)
 
 @app.route("/search")
-def search():
-    #need to pageniate
+@app.route("/search/<int:page>")
+def search(page=1):
     query = request.args.get("query")
-    results = events.search(query) if query else []
-    return render_template("search.html", query=query, results=results)
+    search_count=events.get_search_count(query)
+    page_size = 10
+    page_count = math.ceil(search_count / page_size)
+    page_count = max(page_count, 1)
+    if page < 1:
+        page=1
+    if page > page_count:
+        page-=1
+    results = events.search(query, page, page_size) if query else []
+    return render_template("search.html", query=query, page=page, page_count=page_count, results=results)
 
 @app.route("/report")
 def report():
@@ -119,11 +127,11 @@ def delete_event(event_id):
 
 @app.route("/user/<string:username>")
 def show_user(username):
-    #need to pageniate?
     user_id = users.get_user_id(username)
     user = users.get_user(user_id)
     if not user:
         abort(404)
+    #need to pageniate or just give 10 most recent murders/deaths & a link to paginated murder archives?
     murders = events.get_user_murders(user[0])
     deaths = events.get_user_deaths(user[0])
     return render_template("user.html", user=user, murders=murders, deaths=deaths)

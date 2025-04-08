@@ -86,15 +86,30 @@ def get_user_deaths(user_id):
              """
     return db.query(sql, [user_id])
 
-def search(query):
+def get_search_count(query):
+    sql = """SELECT COUNT(e.id)
+             FROM events e 
+             LEFT JOIN users u ON e.user_id = u.id 
+             LEFT JOIN users t  ON e.target_id = t.id 
+             WHERE confirm_status = 1 AND
+                (u.username LIKE ? OR t.username LIKE ? OR e.zip == ?)
+                """
+    return db.query(sql, ["%" + query + "%", "%" + query + "%", "%" + query + "%"])[0][0]
+    
+
+def search(query, page, page_size):
     sql = """SELECT e.id, u.username killer_username, t.username target_username, e.zip
              FROM events e 
              LEFT JOIN users u ON e.user_id = u.id 
              LEFT JOIN users t  ON e.target_id = t.id 
              WHERE confirm_status = 1 AND
                 (u.username LIKE ? OR t.username LIKE ? OR e.zip == ?)
-                GROUP BY e.id ORDER BY e.id ASC"""
-    return db.query(sql, ["%" + query + "%", "%" + query + "%", "%" + query + "%"])
+                GROUP BY e.id ORDER BY e.id ASC
+                LIMIT ? OFFSET ?
+                """
+    limit = page_size
+    offset = page_size * (page -1)
+    return db.query(sql, ["%" + query + "%", "%" + query + "%", "%" + query + "%", limit, offset])
 
 
 def add_event(user_id, target_id):

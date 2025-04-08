@@ -18,13 +18,20 @@
       <input type="text" name="query" />
       {% endif %}
     </p>
-    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
     <input type="submit" value="Hae" />
   </form>
   
   {% if query %}
   <hr />
   <h2>Tulokset:</h2>
+
+  
+<p>
+  <form action="/search/{{ page - 1 }}" method="get"><input type="hidden" name="query" value="{{ query }}" /> <input type="submit" value="&lt;&lt;" /></form>
+  Sivu {{ page }}/{{ page_count }}
+  <form action="/search/{{ page + 1 }}" method="get"><input type="hidden" name="query" value="{{ query }}" /> <input type="submit" value="&gt;&gt;" /></form>
+</p>
+<hr />
 
 
     {% for result in results %}
