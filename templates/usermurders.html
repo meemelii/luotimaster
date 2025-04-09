@@ -1,0 +1,49 @@
+
+{% extends "layout.html" %}
+
+{% block title %} Luotimaster {%endblock%}
+  
+{% block content %}
+  
+
+<body>
+    <h2>Käyttäjän {{username}} tapot</h2>
+    <p> <a href="/user/{{username}}">Käyttäjän profiiliin</a></p>
+    <hr />
+
+<p>
+  <a href="/user/{{username}}/murders/{{ page - 1 }}">&lt;&lt;</a>
+  Sivu {{ page }}/{{ page_count }}
+  <a href="/user/{{username}}/murders/{{ page + 1 }}">&gt;&gt;</a>
+</p>
+
+
+  {% for murder in murders %}
+  <div class="event">
+    <p>
+      Tapahtumanumero: {{ murder.id }}
+      <br />
+      {{ murder.killer_username }} 
+      {% if murder.describe %} 
+      {{murder.describe}} 
+      {% else %} 
+      taikoi kuoliaaksi  
+      {% endif %} 
+      {{ murder.target_username }}
+
+      {% if murder.zip %}
+      sijainnissa {{ murder.zip }}
+      {% endif %}<br />
+      <a href="/event/{{murder.id}}">Tarkastele</a>
+    </div>
+      {% endfor %}
+    
+        <p>
+            <a href="/user/{{username}}/murders/{{ page - 1 }}">&lt;&lt;</a>
+            Sivu {{ page }}/{{ page_count }}
+            <a href="/user/{{username}}/murders/{{ page + 1 }}">&gt;&gt;</a>
+          </p>
+      <hr />
+
+</body>
+{% endblock %}

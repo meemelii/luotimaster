@@ -18,17 +18,17 @@
 {% endif %}
 
 <p>
-  Henkiä riistetty: {{ murders | count }} <br />
-  Kuolemia: {{ deaths | count }} 
+  Henkiä riistetty: {{ murder_count }} <br />
+  Kuolemia: {{ death_count }} 
 </p>
 
-<h3>Tapot: </h3>
+<h3>Viimeisimmät 5 tappoa: </h3>
 
 
 {% if murders | count == 0 %}
 <p> Ei varmistettuja tappoja. {{ user.username }} on kovin viaton!</p>
-{% endif %}
-
+{% else %}
+<a href="/user/{{user.username}}/murders">Tarkastele pelaajan kaikkia tappoja</a>
 {% for murder in murders %}
 <div class="event">
 <p>
@@ -47,14 +47,16 @@
   {% endif %}<br />
   <a href="/event/{{murder.id}}">Tarkastele tapahtumaa</a>
 </div>
-  {% endfor %}
 
-<h3>Kuolemat: </h3>
+  {% endfor %}
+  {% endif %}
+
+<h3>Viimeisimmät 5 kuolemaa: </h3>
 
 {% if deaths | count == 0 %}
 <p> Ei varmistettuja kuolemia. {{ user.username }} elää! </p>
-{% endif %}
-
+{% else %}
+<a href="/user/{{user.username}}/deaths">Tarkastele pelaajan kaikkia kuolemia</a>
 {% for death in deaths %}
 <div class="event">
 <p>
@@ -75,6 +77,8 @@
   <a href="/event/{{death.id}}">Tarkastele tapahtumaa</a>
 </div>
   {% endfor %}
+  {% endif %}
+
 </body>
 
 {% endblock %}

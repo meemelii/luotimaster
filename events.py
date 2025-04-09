@@ -64,7 +64,7 @@ def get_murders(page, page_size):
     offset = page_size * (page -1)
     return db.query(sql, [limit, offset])
 
-def get_user_murders(user_id):
+def get_user_murders(user_id, page=1, page_size=5):
     sql = """SELECT e.id, u.username killer_username, t.username target_username, e.zip,  D.describe describe
             FROM Events e
              LEFT JOIN users u ON e.user_id = u.id 
@@ -73,18 +73,33 @@ def get_user_murders(user_id):
              LEFT JOIN Details D ON ED.info = D.info
              WHERE confirm_status = 1 AND e.user_id = ?
              ORDER BY e.id DESC
+             LIMIT ? OFFSET ?
              """
-    return db.query(sql, [user_id])
+    limit = page_size
+    offset = page_size * (page -1)
+    return db.query(sql, [user_id, limit, offset])
 
-def get_user_deaths(user_id):
+def get_user_murder_count(user_id):
+    sql ="""SELECT COUNT(id) FROM Events WHERE user_id = ?"""
+    return db.query(sql, [user_id])[0][0]
+
+def get_user_deaths(user_id, page=1, page_size=5):
     sql = """SELECT e.id, u.username killer_username, t.username target_username, e.zip
             FROM Events e
              LEFT JOIN users u ON e.user_id = u.id 
              LEFT JOIN users t  ON e.target_id = t.id
              WHERE confirm_status = 1 AND e.target_id = ?
              ORDER BY e.id DESC
+             LIMIT ? OFFSET ?
              """
-    return db.query(sql, [user_id])
+    limit = page_size
+    offset = page_size * (page -1)
+    return db.query(sql, [user_id, limit, offset])
+
+def get_user_death_count(user_id):
+    sql ="""SELECT COUNT(id) FROM Events WHERE target_id = ?"""
+    return db.query(sql, [user_id])[0][0]
+
 
 def get_search_count(query):
     sql = """SELECT COUNT(e.id)

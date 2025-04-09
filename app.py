@@ -131,10 +131,45 @@ def show_user(username):
     user = users.get_user(user_id)
     if not user:
         abort(404)
-    #need to pageniate or just give 10 most recent murders/deaths & a link to paginated murder archives?
     murders = events.get_user_murders(user[0])
     deaths = events.get_user_deaths(user[0])
-    return render_template("user.html", user=user, murders=murders, deaths=deaths)
+    murder_count = events.get_user_murder_count(user[0])
+    death_count = events.get_user_death_count(user[0])
+    return render_template("user.html", user=user, murders=murders, deaths=deaths, murder_count=murder_count, death_count=death_count)
+
+@app.route("/user/<string:username>/murders")
+@app.route("/user/<string:username>/murders/<int:page>")
+def show_user_murders(username, page=1):
+    page_size = 10
+    user_id = users.get_user_id(username)
+
+    murder_count = events.get_user_murder_count(user_id)
+    page_count = math.ceil(murder_count / page_size)
+    page_count = max(page_count, 1)
+
+    if page < 1:
+        return redirect("/user/" + username + "/murders")
+    if page > page_count:
+        return redirect("/user/" + username + "/murders/" + str(page_count))
+    murders=events.get_user_murders(user_id, page, page_size)
+    return render_template("usermurders.html", page=page, page_count=page_count, murders=murders, username=username)
+
+
+@app.route("/user/<string:username>/deaths")
+@app.route("/user/<string:username>/deaths/<int:page>")
+def show_user_deaths(username, page=1):
+    page_size = 10
+    user_id = users.get_user_id(username)
+    death_count = events.get_user_death_count(user_id)
+    page_count = math.ceil(death_count / page_size)
+    page_count = max(page_count, 1)
+
+    if page < 1:
+        return redirect("/user/" + username  +"/deaths")
+    if page > page_count:
+        return redirect("/user/" + username + "/deaths/" + str(page_count))
+    deaths=events.get_user_deaths(user_id, page, page_size)
+    return render_template("userdeaths.html", page=page, page_count=page_count, deaths=deaths, username=username)
 
 @app.route("/add_image", methods=["GET", "POST"])
 def add_image():
