@@ -8,19 +8,21 @@ Ohjelmiston tavoitteena olisi mahdollistaa murhien kirjaamisen yksinkertaisesti 
 - Käyttäjä pystyy luomaan tunnuksen ja kirjautumaan sisään sovellukseen. 
 - Käyttäjä pystyy lisäämään, muokkaamaan ja poistamaan ilmoitettuja tapahtumia ("raportti").
 - Käyttäjä näkee sovellukseen lisätyt varmistetut tapahtumat ("murhat"), sekä häntä koskevat raportit.
-- Käyttäjä pystyy etsimään kaikkien käyttäjien varmistettuja raportteja hakusanalla.
+- Käyttäjä pystyy etsimään kaikkien käyttäjien murhia hakusanalla.
 - Käyttäjä pystyy varmistamaan muiden käyttäjien tekemiä, häntä koskevia raportteja, tehden niistä murhia.
 - Sovelluksessa on käyttäjäsivut, jotka näyttävät tilastoja ja käyttäjien lisäämät murhat.
-- Käyttäjä pystyy valitsemaan tapahtumalleen asetyypin ja sijainnin. Lisäksi käyttäjät pystyvät lisäämään kuvia tapahtumiin (tai profiilikuviksi).
-
+- Käyttäjä pystyy valitsemaan tapahtumalleen asetyypin ja sijainnin.
+- Käyttäjät pystyvät lisäämään kuvan profiilikuvakseen.
 
 ## Sovelluksen nykytilanne
+Sovellus on hyvässä tilanteessa, joskin se sisältää vielä useita kehityskohteita ja epäoptimaalisuuksia, ja vaatii työtä mm. suuren tietomäärän, saavutettavuuden ja koodin siivoamisen osalta. 
 - Kirjautuminen ja rekistöröinti toimivat.
-- Tapahtumien lisääminen, muokkaaminen, poistaminen ja raportointi toimivat. Tapahtumiin voi lisätä postinumeron ja murhatavan. Käyttäjä voi nähdä omat, häneen kohdistetut raportit, sekä kaikkien käyttäjien murhat.
-- Murha-arkistossa on alkeellinen hakutoiminto.
-- Etusivulla näkyy top 5 pelaajaa (murhien määrä). Käyttäjäsivuilla näkyy murhat ja kuolemat eriteltynä.
-
-
+- Tapahtumien lisääminen, muokkaaminen, poistaminen ja raportointi toimivat. Tapahtumiin voi lisätä postinumeron ja murhatavan. 
+- Tapahtuman ilmoittaja sekä sen kohde voivat kommentoida tapahtumaa. Kommentit voi nähdä tapahtumasivulla, joskin niiden visuaalisointi on hyvin kesken. 
+- Käyttäjä voi nähdä omat, häneen kohdistetut raportit, sekä kaikkien käyttäjien murhat. Murha-arkistossa on alkeellinen hakutoiminto.
+- Etusivulla näkyy top 5 pelaajaa (murhien määrä).
+- Käyttäjillä on omat sivut, joilla näkyy profiilikuva, murhien ja kuolemien määrä, viimeisimmät 5 murhaa ja kuolemaa eriteltyinä, sekä linkki kaikkiin murhiin ja kuolemiin.
+- Sovelluksella on visuaalisesti oma ulkonäkö. 
 
 
 ## Sovelluksen asennus
