@@ -1,8 +1,6 @@
 import sqlite3
 from flask import g
 
-#muokkaa tietorakennetta.
-
 def get_connection():
     con = sqlite3.connect("database.db")
     con.execute("PRAGMA foreign_keys = ON")
