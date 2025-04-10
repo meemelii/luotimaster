@@ -22,18 +22,33 @@
               Murhapaikka (postinumero): <br />
               <input type="text" name="zip" {% if event.zip != None %} value="{{event.zip}}" {% endif %} maxlength="5" minlength="5" />
             </p>
-            <label for="weapontype">Asetyyppi:</label><br />
-              <select name="weapontype">
-              {% for weapon in weapontypes %}
-              {% if weapon.info == details.info %}
-              <option value="{{ weapon.info }}"selected>{{ weapon.info}}</option>
+
+            {% for detail in details %}  
+            {% if detail.title == "weapontype" %}
+            <p>
+              <label for="weapontype">Asetyyppi:</label><br />
+                <select name="weapontype">
+                {% for weapon in weapontypes %}
+                  {% if weapon.info == detail.info %}
+                  <option value="{{ weapon.info }}"selected>{{ weapon.info}}</option>
+                  {% else %}
+                  <option value="{{ weapon.info }}">{{ weapon.info }}</option>
+                  {% endif %}
+                {% endfor %}
+              </p>
+              </select>
               {% else %}
-              <option value="{{ weapon.info }}">{{ weapon.info }}</option>
+              {% if detail.title == "killerstory" %}
+              <p>
+              Murhajan kertomus:<br />  
+                <textarea name="killerstory" rows="5" cols="40"  maxlength="100">{{ detail.info }}</textarea>
+              </p>
+                {% endif %}
               {% endif %}
-              {% endfor %}
-            </select>
+            {% endfor %}
             <br />  
-    
+            <br />  
+            
             <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
             <input type="submit" value="Tallenna muutokset" />
           </form>

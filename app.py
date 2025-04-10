@@ -80,7 +80,6 @@ def show_event(event_id):
         require_login()
         if user_id != event[1] and user_id != event[2]:
             abort(403)
-    
     details = events.get_details(event_id)
     return render_template("eventpage.html", event=event, user_id = user_id, details = details)
 
@@ -100,7 +99,8 @@ def edited(event_id):
     check_csrf()
     zip = request.form["zip"]
     weapontype = request.form["weapontype"]
-    events.edit_event(event_id, zip, weapontype)
+    killerstory = request.form["killerstory"]
+    events.edit_event(event_id, zip, weapontype, killerstory)
     return redirect("/event/"+ str(event_id))
 
 @app.route("/event/<int:event_id>/confirm", methods=["POST"])
@@ -108,6 +108,13 @@ def confirm(event_id):
     require_login()
     check_csrf()   
     events.confirm(event_id, request.form["confirm"])    
+    return redirect("/event/"+ str(event_id))
+
+@app.route("/event/<int:event_id>/targetstory", methods=["POST"])
+def targetstory(event_id):
+    require_login()
+    check_csrf()
+    events.edit_targetstory(event_id, request.form["targetstory"])
     return redirect("/event/"+ str(event_id))
 
 @app.route("/event/<int:event_id>/delete", methods=["GET","POST"])
@@ -163,7 +170,6 @@ def show_user_deaths(username, page=1):
     death_count = events.get_user_death_count(user_id)
     page_count = math.ceil(death_count / page_size)
     page_count = max(page_count, 1)
-
     if page < 1:
         return redirect("/user/" + username  +"/deaths")
     if page > page_count:

@@ -14,14 +14,14 @@
       Tappaja: <a href="/user/{{ event.killer_username }}">{{ event.killer_username }}</a><br /> 
       
       Kohde:   <a href="/user/{{ event.target_username }}">{{ event.target_username }}</a><br />
-
-      Ase: {{details.info}} <br />
       
-      Sijainti: {% if event.zip == None %}
-          Ei tiedossa.
+      Sijainti: 
+      {% if event.zip == "" %}
+        Ei tiedossa.
       {% else %} 
       {{ event.zip }}
-      {% endif %}<br />
+      {% endif %}  
+      <br />
 
       Status:
       {% if event.confirm_status == 0 %}
@@ -29,6 +29,33 @@
       {% else %}
       Varmistettu.
       {% endif %}  
+      {% for detail in details %}  
+        {% if detail.title == "weapontype" %}
+          Ase: {{detail.info}} 
+        {% endif %}<br />
+        
+        {% if detail.title == "killerstory" %}
+          Murhaaja kertoo: {{detail.info}}
+        {% endif %}
+        {% endfor %}
+        <br />
+        <br />
+        {% for detail in details %}  
+        {% if detail.title == "targetstory" %}
+          {% if event.target_id == user_id %}
+            Uhri kertoo: <br />
+            <form action="/event/{{event.id}}/targetstory" method="post"><textarea name="targetstory" rows="5" cols="40"  maxlength="100">{{ detail.info }}</textarea><br /><br />
+              <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
+              <input type="submit" value="Tallenna muutokset" />
+            </form>
+            {% else %}
+            Uhri kertoo: {{detail.info }}
+          {% endif %}
+        {% endif %}
+  
+      {% endfor %}
+
+
     </p>
     {% if event.user_id == user_id %}
     <form action="/event/{{event.id}}/edit">
@@ -41,7 +68,6 @@
     {% if event.target_id == user_id %}
     {% if event.confirm_status == 0 %}
     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
-
       <form action="/event/{{event.id}}/confirm" method="post">
         <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
         <input type="hidden" name="confirm" value="1">

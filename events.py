@@ -34,7 +34,7 @@ def get_details(event_id):
             WHERE ED.event_id = ?
     """
     result = db.query(sql, [event_id])
-    return result[0] if result else None
+    return result if result else None
 
 def get_weapontypes():
     sql = """SELECT title, info
@@ -131,19 +131,30 @@ def add_event(user_id, target_id):
     sql = "INSERT INTO events (user_id, target_id, zip, confirm_status) VALUES (?, ?, NULL, 0)"
     db.execute(sql, [user_id, target_id])
     event_id = db.last_insert_id()
-    sql = "INSERT INTO Event_details (event_id, title, info) VALUES (?, 'weapontype', 'Luokittelematon') "
+    sql = "INSERT INTO Event_details (event_id, title, info) VALUES (?, 'weapontype', 'Luokittelematon')"
     db.execute(sql, [event_id])
-    
+    sql = "INSERT INTO Event_details (event_id, title, info) VALUES (?, 'killerstory', '')"
+    db.execute(sql, [event_id])
+    sql = "INSERT INTO Event_details (event_id, title, info) VALUES (?, 'targetstory', '')"
+    db.execute(sql, [event_id])
     return event_id
 
-def edit_event(event_id, zip_code, weapontype):
+def edit_event(event_id, zip_code, weapontype, killerstory):
     if zip_code != None:
         sql = "UPDATE Events SET zip = ? WHERE id = ?"
         db.execute(sql, [zip_code, event_id])
-    sql = "DELETE FROM Event_details WHERE event_id = ?"
+    sql = "DELETE FROM Event_details WHERE event_id = ? AND Event_details.title != 'targetstory'"
     db.execute(sql, [event_id])
     sql = "INSERT INTO Event_details (event_id, title, info) VALUES (?, 'weapontype', ?) "
     db.execute(sql, [event_id, weapontype])
+    sql = "INSERT INTO Event_details (event_id, title, info) VALUES (?, 'killerstory', ?) "
+    db.execute(sql, [event_id, killerstory])
+
+def edit_targetstory(event_id, targetstory):
+    sql = "DELETE FROM Event_details WHERE event_id = ? AND Event_details.title == 'targetstory'"
+    db.execute(sql, [event_id])
+    sql = "INSERT INTO Event_details (event_id, title, info) VALUES (?, 'targetstory', ?) "
+    db.execute(sql, [event_id, targetstory])
 
 def confirm(event_id, confirm_status):
     sql = "UPDATE Events SET confirm_status = ? WHERE id = ?"
