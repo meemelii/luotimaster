@@ -32,6 +32,7 @@
 
   {% for murder in murders %}
   <div class="event">
+    <event></event>
     <p>
       Tapahtumanumero: {{ murder.id }}
       <br />
@@ -47,7 +48,7 @@
       sijainnissa {{ murder.zip }}
       {% endif %}<br />
       <a href="/event/{{murder.id}}">Tarkastele</a>
-    </div>
+    </event></div> 
       {% endfor %}
     
       <p>

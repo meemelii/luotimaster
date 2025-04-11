@@ -28,28 +28,30 @@
       Ei varmistettu.
       {% else %}
       Varmistettu.
-      {% endif %}  
+      {% endif %} 
+      <br /> 
       {% for detail in details %}  
         {% if detail.title == "weapontype" %}
           Ase: {{detail.info}} 
         {% endif %}<br />
         
         {% if detail.title == "killerstory" %}
-          Murhaaja kertoo: {{detail.info}}
-        {% endif %}
+      
+          <h4>Murhaaja kertoo: </h4>
+          <p>{{detail.info}}</p>
+        
+          {% endif %}
         {% endfor %}
-        <br />
-        <br />
         {% for detail in details %}  
         {% if detail.title == "targetstory" %}
+        <h4>Uhri kertoo: </h4>
+        <p>{{detail.info}}</p>
           {% if event.target_id == user_id %}
-            Uhri kertoo: <br />
+            Muokkaa kertomustasi: <br />
             <form action="/event/{{event.id}}/targetstory" method="post"><textarea name="targetstory" rows="5" cols="40"  maxlength="100">{{ detail.info }}</textarea><br /><br />
               <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
               <input type="submit" value="Tallenna muutokset" />
             </form>
-            {% else %}
-            Uhri kertoo: {{detail.info }}
           {% endif %}
         {% endif %}
   
