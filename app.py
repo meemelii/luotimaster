@@ -217,7 +217,15 @@ def register():
 @app.route("/create", methods=["POST"])
 def create():
     username = request.form["username"]
+    if not username or len(username) > 20:
+        flash("VIRHE: Käyttäjätunnus on virheellinen!")
+        filled = {"username": username}
+        return render_template("register.html", filled=filled)
     password1 = request.form["password1"]
+    if not password1 or len(password1) > 20:
+        flash("VIRHE: Salasana on virheellinen!")
+        filled = {"username": username}
+        return render_template("register.html", filled=filled)
     password2 = request.form["password2"]
     if password1 != password2:
         flash("VIRHE: salasanat eivät täsmää!")
