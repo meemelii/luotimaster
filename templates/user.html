@@ -30,26 +30,23 @@
 {% else %}
 <a href="/user/{{user.username}}/murders">Tarkastele pelaajan kaikkia tappoja</a>
 {% for murder in murders %}
-<div class="event">
-<p>
-
-  Tapahtuma #{{ murder.id }}:
-  <br />
-  {{ murder.killer_username }} 
-  {% if murder.describe %} 
-  {{murder.describe}} 
-  {% else %} 
-  taikoi kuoliaaksi  
-  {% endif %} 
-  {{ murder.target_username }}
-  {% if murder.zip %}
-  sijainnissa {{ murder.zip }}
-  {% endif %}<br />
-  <a href="/event/{{murder.id}}">Tarkastele tapahtumaa</a>
-</div>
-
-  {% endfor %}
-  {% endif %}
+  <div class="event">
+  <p>
+    Tapahtuma #{{ murder.id }}:<br />
+    {{ murder.killer_username }} 
+    {% if murder.describe %} 
+    {{ murder.describe }} 
+    {% else %} 
+    taikoi kuoliaaksi  
+    {% endif %} 
+    {{ murder.target_username }}
+    {% if murder.zip %}
+    sijainnissa {{ murder.zip }}
+    {% endif %}<br />
+    <a href="/event/{{murder.id}}">Tarkastele tapahtumaa</a>
+  </div>
+{% endfor %}
+{% endif %}
 
 <h3>Viimeisimmät 5 kuolemaa: </h3>
 
@@ -62,18 +59,18 @@
 <p>
   Tapahtuma #{{ death.id }}
   <br />
-  {{ death.killer_username }} tappoi 
-
+  {{ death.killer_username }}
   {% if death.describe %} 
-  {{death.describe}} 
-  {% else %} 
-  taikoi kuoliaaksi  
+    {{death.describe}} 
+    {% else %} 
+    taikoi kuoliaaksi  
   {% endif %} 
-  
   {{ death.target_username }}
+  
   {% if death.zip %}
-  sijainnissa {{ death.zip }}
-  {% endif %}<br />
+    sijainnissa {{ death.zip }}
+  {% endif %}
+  <br />
   <a href="/event/{{death.id}}">Tarkastele tapahtumaa</a>
 </div>
   {% endfor %}

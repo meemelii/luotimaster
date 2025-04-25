@@ -89,10 +89,13 @@ def get_user_murder_count(user_id):
     return db.query(sql, [user_id])[0][0]
 
 def get_user_deaths(user_id, page=1, page_size=5):
-    sql = """SELECT e.id, u.username killer_username, t.username target_username, e.zip
+    sql = """SELECT e.id, u.username killer_username,
+            t.username target_username, e.zip,  D.describe describe
             FROM Events e
             LEFT JOIN users u ON e.user_id = u.id 
             LEFT JOIN users t  ON e.target_id = t.id
+            LEFT JOIN Event_details ED ON E.id = ED.event_id
+            LEFT JOIN Details D ON ED.info = D.info
             WHERE confirm_status = 1 AND e.target_id = ?
             GROUP BY E.id
             ORDER BY e.id DESC

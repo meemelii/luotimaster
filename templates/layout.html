@@ -17,8 +17,9 @@
       </li>
         <li><div class="nav"><nav>
             <ul>
+              <li><a href="/">Etusivu</a></li>
               {% if session.user_id %}
-              <li><a href="/user/{{session.username}}">Oma profiili</a></li>
+              <li><a href="/user/{{session.username}}">Profiili</a></li>
               <li><a href="/logout">Kirjaudu ulos</a></li>
               
               {% else %}
