@@ -1,8 +1,9 @@
-import sqlite3, secrets, math
+import sqlite3, secrets, math, markupsafe
 from flask import Flask
 from flask import abort, flash, make_response, redirect, render_template, request, session
 from werkzeug.security import generate_password_hash, check_password_hash
 import db, config, events, users
+
 
 app = Flask(__name__)
 app.secret_key = config.secret_key
@@ -100,6 +101,8 @@ def edited(event_id):
     zip = request.form["zip"]
     weapontype = request.form["weapontype"]
     killerstory = request.form["killerstory"]
+    if len(killerstory) > 200:
+        abort(403)
     events.edit_event(event_id, zip, weapontype, killerstory)
     return redirect("/event/"+ str(event_id))
 
@@ -114,8 +117,17 @@ def confirm(event_id):
 def targetstory(event_id):
     require_login()
     check_csrf()
-    events.edit_targetstory(event_id, request.form["targetstory"])
+    targetstory = request.form["targetstory"]
+    if len(targetstory) > 200:
+        abort(403)
+    events.edit_targetstory(event_id, targetstory)
     return redirect("/event/"+ str(event_id))
+
+@app.template_filter()
+def show_lines(info):
+    info = str(markupsafe.escape(info))
+    info = info.replace("\n", "<br />")
+    return markupsafe.Markup(info)
 
 @app.route("/event/<int:event_id>/delete", methods=["GET","POST"])
 def delete_event(event_id):

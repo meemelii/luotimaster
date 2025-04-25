@@ -36,25 +36,32 @@
         {% endif %}<br />
         
         {% if detail.title == "killerstory" %}
-      
-          <h4>Murhaaja kertoo: </h4>
-          <p>{{detail.info}}</p>
-        
-          {% endif %}
+        <h4>Murhaaja kertoo: </h4>
+            {% if detail.info == ""%}
+            <p>Murhaaja on vielä kovin hiljainen.</p>
+            {% else %}
+            <div class="story"><p>{{detail.info | show_lines }}</p></div>
+            {% endif %}
+        {% endif %}
         {% endfor %}
+
         {% for detail in details %}  
         {% if detail.title == "targetstory" %}
         <h4>Uhri kertoo: </h4>
-        <p>{{detail.info}}</p>
+        {% if detail.info == "" %}
+            <div class="story"><p>Vainaja on vielä kovin hiljainen.</p></div>
+        {% else %}
+        <div class="story"><p>{{detail.info | show_lines }}</p></div>
+        {% endif %}
           {% if event.target_id == user_id %}
             Muokkaa kertomustasi: <br />
-            <form action="/event/{{event.id}}/targetstory" method="post"><textarea name="targetstory" rows="5" cols="40"  maxlength="100">{{ detail.info }}</textarea><br /><br />
+            <form action="/event/{{event.id}}/targetstory" method="post">
+              <textarea name="targetstory" rows="5" cols="40" maxlength="200">{{ detail.info }}</textarea><br /><br />
               <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
               <input type="submit" value="Tallenna muutokset" />
             </form>
           {% endif %}
         {% endif %}
-  
       {% endfor %}
 
 
