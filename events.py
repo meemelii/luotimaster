@@ -19,7 +19,8 @@ def get_incoming_events(user_id):
     return db.query(sql, [user_id])
 
 def get_event(event_id):
-    sql = """SELECT E.id, E.user_id, E.target_id, E.zip, E.confirm_status, U.username killer_username, T.username target_username
+    sql = """SELECT E.id, E.user_id, E.target_id, E.zip, E.confirm_status,
+                U.username killer_username, T.username target_username
                 FROM Events E
                 LEFT JOIN Users U ON E.user_id = U.id 
                 LEFT JOIN Users T  ON E.target_id = T.id
@@ -50,91 +51,92 @@ def get_murder_count():
     return db.query(sql)[0][0]
 
 def get_murders(page, page_size):
-    sql = """SELECT E.id, U.username killer_username, T.username target_username, E.zip, D.describe describe
+    sql = """SELECT E.id, U.username killer_username,
+            T.username target_username, E.zip, D.describe describe
             FROM Events E
-             LEFT JOIN Users U ON E.user_id = U.id 
-             LEFT JOIN Users T  ON E.target_id = T.id
-             LEFT JOIN Event_details ED ON E.id = ED.event_id
-             LEFT JOIN details D ON ED.info = D.info
-             WHERE confirm_status = 1
-             GROUP BY E.id
-             ORDER BY E.id DESC
-             LIMIT ? OFFSET ?
-             """
+            LEFT JOIN Users U ON E.user_id = U.id 
+            LEFT JOIN Users T  ON E.target_id = T.id
+            LEFT JOIN Event_details ED ON E.id = ED.event_id
+            LEFT JOIN details D ON ED.info = D.info
+            WHERE confirm_status = 1
+            GROUP BY E.id
+            ORDER BY E.id DESC
+            LIMIT ? OFFSET ?
+            """
     limit = page_size
     offset = page_size * (page -1)
     return db.query(sql, [limit, offset])
 
 def get_user_murders(user_id, page=1, page_size=5):
-    sql = """SELECT e.id, u.username killer_username, t.username target_username, e.zip,  D.describe describe
+    sql = """SELECT e.id, u.username killer_username,
+            t.username target_username, e.zip,  D.describe describe
             FROM Events e
-             LEFT JOIN users u ON e.user_id = u.id 
-             LEFT JOIN users t  ON e.target_id = t.id
-             LEFT JOIN Event_details ED ON E.id = ED.event_id
-             LEFT JOIN Details D ON ED.info = D.info
-             WHERE confirm_status = 1 AND e.user_id = ?
-             GROUP BY E.id
-             ORDER BY e.id DESC
-             LIMIT ? OFFSET ?
-             """
+            LEFT JOIN users u ON e.user_id = u.id 
+            LEFT JOIN users t  ON e.target_id = t.id
+            LEFT JOIN Event_details ED ON E.id = ED.event_id
+            LEFT JOIN Details D ON ED.info = D.info
+            WHERE confirm_status = 1 AND e.user_id = ?
+            GROUP BY E.id
+            ORDER BY e.id DESC
+            LIMIT ? OFFSET ?
+            """
     limit = page_size
     offset = page_size * (page -1)
     return db.query(sql, [user_id, limit, offset])
 
 def get_user_murder_count(user_id):
-    sql ="""SELECT COUNT(id) FROM Events WHERE user_id = ?"""
+    sql = """SELECT COUNT(id) FROM Events WHERE user_id = ?"""
     return db.query(sql, [user_id])[0][0]
 
 def get_user_deaths(user_id, page=1, page_size=5):
     sql = """SELECT e.id, u.username killer_username, t.username target_username, e.zip
             FROM Events e
-             LEFT JOIN users u ON e.user_id = u.id 
-             LEFT JOIN users t  ON e.target_id = t.id
-             WHERE confirm_status = 1 AND e.target_id = ?
-             GROUP BY E.id
-             ORDER BY e.id DESC
-             LIMIT ? OFFSET ?
-             """
+            LEFT JOIN users u ON e.user_id = u.id 
+            LEFT JOIN users t  ON e.target_id = t.id
+            WHERE confirm_status = 1 AND e.target_id = ?
+            GROUP BY E.id
+            ORDER BY e.id DESC
+            LIMIT ? OFFSET ?
+            """
     limit = page_size
     offset = page_size * (page -1)
     return db.query(sql, [user_id, limit, offset])
 
 def get_user_death_count(user_id):
-    sql ="""SELECT COUNT(id) FROM Events WHERE target_id = ?"""
+    sql = """SELECT COUNT(id) FROM Events WHERE target_id = ?"""
     return db.query(sql, [user_id])[0][0]
 
 
 def get_search_count(query):
     sql = """SELECT COUNT(e.id)
-             FROM events e 
-             LEFT JOIN users u ON e.user_id = u.id 
-             LEFT JOIN users t  ON e.target_id = t.id 
-             WHERE confirm_status = 1 AND
-                (u.username LIKE ? OR t.username LIKE ? OR e.zip == ?)
-                """
+            FROM events e 
+            LEFT JOIN users u ON e.user_id = u.id 
+            LEFT JOIN users t  ON e.target_id = t.id 
+            WHERE confirm_status = 1 AND
+            (u.username LIKE ? OR t.username LIKE ? OR e.zip == ?)
+            """
     return db.query(sql, ["%" + query + "%", "%" + query + "%", "%" + query + "%"])[0][0]
-    
 
 def search(query, page, page_size):
     sql = """SELECT e.id, u.username killer_username, t.username target_username, e.zip
-             FROM events e 
-             LEFT JOIN users u ON e.user_id = u.id 
-             LEFT JOIN users t  ON e.target_id = t.id 
-             WHERE confirm_status = 1 AND
-                (u.username LIKE ? OR t.username LIKE ? OR e.zip == ?)
-                GROUP BY e.id ORDER BY e.id ASC
-                LIMIT ? OFFSET ?
-                """
+            FROM events e 
+            LEFT JOIN users u ON e.user_id = u.id 
+            LEFT JOIN users t  ON e.target_id = t.id 
+            WHERE confirm_status = 1 AND 
+            (u.username LIKE ? OR t.username LIKE ? OR e.zip == ?)
+            GROUP BY e.id ORDER BY e.id ASC
+            LIMIT ? OFFSET ?
+            """
     limit = page_size
     offset = page_size * (page -1)
     return db.query(sql, ["%" + query + "%", "%" + query + "%", "%" + query + "%", limit, offset])
-
 
 def add_event(user_id, target_id):
     sql = "INSERT INTO events (user_id, target_id, zip, confirm_status) VALUES (?, ?, NULL, 0)"
     db.execute(sql, [user_id, target_id])
     event_id = db.last_insert_id()
-    sql = "INSERT INTO Event_details (event_id, title, info) VALUES (?, 'weapontype', 'Luokittelematon')"
+    sql = """INSERT INTO Event_details (event_id, title, info)
+                VALUES (?, 'weapontype', 'Luokittelematon')"""
     db.execute(sql, [event_id])
     sql = "INSERT INTO Event_details (event_id, title, info) VALUES (?, 'killerstory', '')"
     db.execute(sql, [event_id])
@@ -143,7 +145,7 @@ def add_event(user_id, target_id):
     return event_id
 
 def edit_event(event_id, zip_code, weapontype, killerstory):
-    if zip_code != None:
+    if zip_code is not None:
         sql = "UPDATE Events SET zip = ? WHERE id = ?"
         db.execute(sql, [zip_code, event_id])
     sql = "DELETE FROM Event_details WHERE event_id = ? AND Event_details.title != 'targetstory'"
@@ -168,5 +170,3 @@ def delete_event(event_id):
     db.execute(sql, [event_id])
     sql = "DELETE FROM Events WHERE id = ?"
     db.execute(sql, [event_id])
-    
-

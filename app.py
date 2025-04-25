@@ -1,9 +1,14 @@
-import sqlite3, secrets, math, markupsafe
+import sqlite3
+import secrets
+import math
+import markupsafe
+
 from flask import Flask
 from flask import abort, flash, make_response, redirect, render_template, request, session
-from werkzeug.security import generate_password_hash, check_password_hash
-import db, config, events, users
 
+import config
+import events
+import users
 
 app = Flask(__name__)
 app.secret_key = config.secret_key
@@ -12,8 +17,8 @@ app.secret_key = config.secret_key
 def index():
     murderers = users.get_top5()
     if "user_id" in session:
-        username=session["username"]
-    else: username=None
+        username = session["username"]
+    else: username = None
     return render_template("index.html", murderers=murderers, username=username)
 
 @app.route("/events")
@@ -22,7 +27,8 @@ def ownevents():
     user_id = session["user_id"]
     outgoing_events = events.get_outgoing_events(user_id)
     incoming_events = events.get_incoming_events(user_id)
-    return render_template("ownevents.html", incoming_events=incoming_events, outgoing_events=outgoing_events)
+    return render_template("ownevents.html", incoming_events=incoming_events,
+                           outgoing_events=outgoing_events)
 
 @app.route("/murders")
 @app.route("/murders/<int:page>")
@@ -36,29 +42,30 @@ def murders(page=1):
         return redirect("/murders")
     if page > page_count:
         return redirect("/murders/" + str(page_count))
-    murders=events.get_murders(page, page_size)
-    return render_template("murders.html", page=page, page_count=page_count, murders=murders)
+    getmurders = events.get_murders(page, page_size)
+    return render_template("murders.html", page=page, page_count=page_count, murders=getmurders)
 
 @app.route("/search")
 @app.route("/search/<int:page>")
 def search(page=1):
     query = request.args.get("query")
-    search_count=events.get_search_count(query)
+    search_count = events.get_search_count(query)
     page_size = 10
     page_count = math.ceil(search_count / page_size)
     page_count = max(page_count, 1)
     if page < 1:
-        page=1
+        page = 1
     if page > page_count:
-        page-=1
+        page -= 1
     results = events.search(query, page, page_size) if query else []
-    return render_template("search.html", query=query, page=page, page_count=page_count, results=results)
+    return render_template("search.html", query=query, page=page,
+                           page_count=page_count, results=results)
 
 @app.route("/report")
 def report():
     require_login()
     kohteet = users.get_other_users(session["user_id"])
-    return render_template("report.html", kohteet=kohteet )
+    return render_template("report.html", kohteet=kohteet)
 
 @app.route("/new_report", methods=["POST"])
 def new_report():
@@ -72,25 +79,25 @@ def new_report():
 @app.route("/event/<int:event_id>")
 def show_event(event_id):
     event = events.get_event(event_id)
-    if not event: 
+    if not event:
         abort(404)
     if "user_id" in session:
         user_id = session["user_id"]
     else: user_id = None
     if event[4] == 0:
         require_login()
-        if user_id != event[1] and user_id != event[2]:
+        if user_id not in (event[1], event[2]):
             abort(403)
     details = events.get_details(event_id)
-    return render_template("eventpage.html", event=event, user_id = user_id, details = details)
+    return render_template("eventpage.html", event=event, user_id=user_id, details=details)
 
 @app.route("/event/<int:event_id>/edit")
 def editpage(event_id):
     require_login()
-    event=events.get_event(event_id)
-    details=events.get_details(event_id)
+    event = events.get_event(event_id)
+    details = events.get_details(event_id)
     weapontypes = events.get_weapontypes()
-    if not event: 
+    if not event:
         abort(404)
     return render_template("editevent.html", event=event, details=details, weapontypes=weapontypes)
 
@@ -98,29 +105,29 @@ def editpage(event_id):
 def edited(event_id):
     require_login()
     check_csrf()
-    zip = request.form["zip"]
+    getzip = request.form["zip"]
     weapontype = request.form["weapontype"]
     killerstory = request.form["killerstory"]
-    if len(killerstory) > 200:
+    if len(killerstory) > 200 or len(getzip) > 5:
         abort(403)
-    events.edit_event(event_id, zip, weapontype, killerstory)
+    events.edit_event(event_id, getzip, weapontype, killerstory)
     return redirect("/event/"+ str(event_id))
 
 @app.route("/event/<int:event_id>/confirm", methods=["POST"])
-def confirm(event_id): 
+def confirm(event_id):
     require_login()
-    check_csrf()   
-    events.confirm(event_id, request.form["confirm"])    
+    check_csrf()
+    events.confirm(event_id, request.form["confirm"])
     return redirect("/event/"+ str(event_id))
 
 @app.route("/event/<int:event_id>/targetstory", methods=["POST"])
 def targetstory(event_id):
     require_login()
     check_csrf()
-    targetstory = request.form["targetstory"]
-    if len(targetstory) > 200:
+    gettargetstory = request.form["targetstory"]
+    if len(gettargetstory) > 200:
         abort(403)
-    events.edit_targetstory(event_id, targetstory)
+    events.edit_targetstory(event_id, gettargetstory)
     return redirect("/event/"+ str(event_id))
 
 @app.template_filter()
@@ -129,7 +136,7 @@ def show_lines(info):
     info = info.replace("\n", "<br />")
     return markupsafe.Markup(info)
 
-@app.route("/event/<int:event_id>/delete", methods=["GET","POST"])
+@app.route("/event/<int:event_id>/delete", methods=["GET", "POST"])
 def delete_event(event_id):
     require_login()
     user_id = session["user_id"]
@@ -142,7 +149,7 @@ def delete_event(event_id):
             events.delete_event(event_id)
             flash("Tapahtuma poistettu.")
             return redirect("/events")
-        else: return redirect("/events/"+ str(event_id))
+    return redirect("/events/"+ str(event_id))
 
 @app.route("/user/<string:username>")
 def show_user(username):
@@ -150,18 +157,18 @@ def show_user(username):
     user = users.get_user(user_id)
     if not user:
         abort(404)
-    murders = events.get_user_murders(user[0])
+    getmurders = events.get_user_murders(user[0])
     deaths = events.get_user_deaths(user[0])
     murder_count = events.get_user_murder_count(user[0])
     death_count = events.get_user_death_count(user[0])
-    return render_template("user.html", user=user, murders=murders, deaths=deaths, murder_count=murder_count, death_count=death_count)
+    return render_template("user.html", user=user, murders=getmurders, deaths=deaths,
+                           murder_count=murder_count, death_count=death_count)
 
 @app.route("/user/<string:username>/murders")
 @app.route("/user/<string:username>/murders/<int:page>")
 def show_user_murders(username, page=1):
     page_size = 10
     user_id = users.get_user_id(username)
-
     murder_count = events.get_user_murder_count(user_id)
     page_count = math.ceil(murder_count / page_size)
     page_count = max(page_count, 1)
@@ -170,8 +177,9 @@ def show_user_murders(username, page=1):
         return redirect("/user/" + username + "/murders")
     if page > page_count:
         return redirect("/user/" + username + "/murders/" + str(page_count))
-    murders=events.get_user_murders(user_id, page, page_size)
-    return render_template("usermurders.html", page=page, page_count=page_count, murders=murders, username=username)
+    getmurders = events.get_user_murders(user_id, page, page_size)
+    return render_template("usermurders.html", page=page, page_count=page_count,
+                           murders=getmurders, username=username)
 
 
 @app.route("/user/<string:username>/deaths")
@@ -186,8 +194,9 @@ def show_user_deaths(username, page=1):
         return redirect("/user/" + username  +"/deaths")
     if page > page_count:
         return redirect("/user/" + username + "/deaths/" + str(page_count))
-    deaths=events.get_user_deaths(user_id, page, page_size)
-    return render_template("userdeaths.html", page=page, page_count=page_count, deaths=deaths, username=username)
+    deaths = events.get_user_deaths(user_id, page, page_size)
+    return render_template("userdeaths.html", page=page, page_count=page_count,
+                           deaths=deaths, username=username)
 
 @app.route("/add_image", methods=["GET", "POST"])
 def add_image():
@@ -195,12 +204,12 @@ def add_image():
     if request.method == "GET":
         return render_template("add_image.html")
     if request.method == "POST":
-        check_csrf()  
+        check_csrf()
         file = request.files["image"]
         if not file.filename.endswith(".jpg"):
             flash("VIRHE: väärä tiedostomuoto")
             return redirect("/add_image")
-        image=file.read()
+        image = file.read()
         if len(image) > 100 * 1024:
             flash("VIRHE: liian suuri kuva")
             return redirect("/add_image")
@@ -225,7 +234,6 @@ def register():
     if request.method == "GET":
         return render_template("register.html", filled={})
 
-
 @app.route("/create", methods=["POST"])
 def create():
     username = request.form["username"]
@@ -244,7 +252,7 @@ def create():
         filled = {"username": username}
         return render_template("register.html", filled=filled)
     try:
-        users.create_user(username,password1)
+        users.create_user(username, password1)
         flash("Tunnus luotu!")
         return redirect("/")
     except sqlite3.IntegrityError:
@@ -252,9 +260,7 @@ def create():
         filled = {"username": username}
         return render_template("register.html", filled=filled)
 
-    
-
-@app.route("/login", methods=["GET","POST"])
+@app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "GET":
         return render_template("login.html", filled={})
@@ -262,17 +268,15 @@ def login():
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
-
         user_id = users.check_login(username, password)
         if user_id:
             session["user_id"] = user_id
             session["csrf_token"] = secrets.token_hex(16)
             session["username"] = username
             return redirect("/")
-        else:
-            flash("VIRHE: väärä tunnus tai salasana")
-            filled = {"username": username}
-            return render_template("login.html", filled=filled)
+        flash("VIRHE: väärä tunnus tai salasana")
+        filled = {"username": username}
+        return render_template("login.html", filled=filled)
 
 def check_csrf():
     if "csrf_token" not in request.form:
