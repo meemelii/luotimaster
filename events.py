@@ -57,6 +57,7 @@ def get_murders(page, page_size):
              LEFT JOIN Event_details ED ON E.id = ED.event_id
              LEFT JOIN details D ON ED.info = D.info
              WHERE confirm_status = 1
+             GROUP BY E.id
              ORDER BY E.id DESC
              LIMIT ? OFFSET ?
              """
@@ -72,6 +73,7 @@ def get_user_murders(user_id, page=1, page_size=5):
              LEFT JOIN Event_details ED ON E.id = ED.event_id
              LEFT JOIN Details D ON ED.info = D.info
              WHERE confirm_status = 1 AND e.user_id = ?
+             GROUP BY E.id
              ORDER BY e.id DESC
              LIMIT ? OFFSET ?
              """
@@ -89,6 +91,7 @@ def get_user_deaths(user_id, page=1, page_size=5):
              LEFT JOIN users u ON e.user_id = u.id 
              LEFT JOIN users t  ON e.target_id = t.id
              WHERE confirm_status = 1 AND e.target_id = ?
+             GROUP BY E.id
              ORDER BY e.id DESC
              LIMIT ? OFFSET ?
              """
@@ -161,8 +164,9 @@ def confirm(event_id, confirm_status):
     db.execute(sql, [confirm_status, event_id])
 
 def delete_event(event_id):
+    sql = "DELETE FROM Event_details WHERE event_id = ?"
+    db.execute(sql, [event_id])
     sql = "DELETE FROM Events WHERE id = ?"
     db.execute(sql, [event_id])
-    sql = "DELETE FROM Event.details WHERE id = ?"
-    db.execute(sql, [event_id])
+    
 
