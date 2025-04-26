@@ -32,11 +32,21 @@
         </ul>
       </upperbar>
       </div>    
-  {% for message in get_flashed_messages() %}
-  <p class="info">
-    {{ message }}
-  </p>
-  {% endfor %}
+  {% with messages = get_flashed_messages(with_categories=true)%}
+    {% if messages%}    
+      {% for category, message in messages %}
+          {% if category == "error" %}
+          <div class="error">
+            VIRHE: {{ message }}
+          </div>
+            {% endif %}          
+          {% if category == "info" %}
+          <div class="info">
+            {{ message }}</div>
+          {% endif %}
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
 
   <div class="content">
     {% block content %}{% endblock %}

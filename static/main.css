@@ -9,8 +9,8 @@ body {
     background-color: rgb(163, 149, 134);
     margin: 0;
     padding: 0 ;
-    
-    
+    border: 2px rgb(0, 0, 0);
+    border-style: none solid solid solid;
   }
 
   upperbar ul {
@@ -84,6 +84,13 @@ body {
     border: 2px solid rgb(0, 0, 0);
     margin: 0.5em 0;
     padding: 1em;
+    background-color: rgb(167, 210, 158);
+    color: rgb(0, 0, 0);
+  }  
+  .error {
+    border: 2px solid rgb(0, 0, 0);
+    margin: 0.5em 0;
+    padding: 1em;
     background-color: rgb(208, 138, 138);
     color: rgb(0, 0, 0);
   }  
@@ -92,6 +99,7 @@ body {
     background-color: rgb(225, 225, 225);
     padding: 1em;
     margin: 0.5em 0;
+    border: 1px solid rgb(0, 0, 0);
   }
   .event {
     border: 2px solid black;

@@ -73,7 +73,7 @@ def new_report():
     check_csrf()
     target_id = request.form["kohde"]
     event_id = events.add_event(session["user_id"], target_id)
-    flash("Tapahtuma luotu! Voit halutessasi antaa lisätietoja tapahtumasta.")
+    flash("Tapahtuma luotu! Voit halutessasi antaa lisätietoja tapahtumasta.", "info")
     return redirect("/event/" + str(event_id) + "/edit")
 
 @app.route("/event/<int:event_id>")
@@ -147,7 +147,7 @@ def delete_event(event_id):
         if "continue" in request.form:
             check_csrf()
             events.delete_event(event_id)
-            flash("Tapahtuma poistettu.")
+            flash("Tapahtuma poistettu.", "info")
             return redirect("/events")
     return redirect("/events/"+ str(event_id))
 
@@ -207,16 +207,16 @@ def add_image():
         check_csrf()
         file = request.files["image"]
         if not file.filename.endswith(".jpg"):
-            flash("VIRHE: väärä tiedostomuoto")
+            flash("Väärä tiedostomuoto!", "error")
             return redirect("/add_image")
         image = file.read()
         if len(image) > 100 * 1024:
-            flash("VIRHE: liian suuri kuva")
+            flash("Liian suuri kuva", "error")
             return redirect("/add_image")
         user_id = session["user_id"]
         username = session["username"]
         users.update_image(user_id, image)
-        flash("Kuvan lisäys onnistui!")
+        flash("Kuvan lisäys onnistui!", "info")
         return redirect("/user/" + username)
 
 @app.route("/image/<string:username>")
@@ -238,25 +238,25 @@ def register():
 def create():
     username = request.form["username"]
     if not username or len(username) > 20:
-        flash("VIRHE: Käyttäjätunnus on virheellinen!")
+        flash("Käyttäjätunnus on virheellinen!", "error")
         filled = {"username": username}
         return render_template("register.html", filled=filled)
     password1 = request.form["password1"]
     if not password1 or len(password1) > 20:
-        flash("VIRHE: Salasana on virheellinen!")
+        flash("Salasana on virheellinen!", "error")
         filled = {"username": username}
         return render_template("register.html", filled=filled)
     password2 = request.form["password2"]
     if password1 != password2:
-        flash("VIRHE: salasanat eivät täsmää!")
+        flash("Salasanat eivät täsmää!", "error")
         filled = {"username": username}
         return render_template("register.html", filled=filled)
     try:
         users.create_user(username, password1)
-        flash("Tunnus luotu, voit nyt kirjautua sisään.")
+        flash("Tunnus luotu, voit nyt kirjautua sisään.", "info")
         return redirect("/login")
     except sqlite3.IntegrityError:
-        flash("VIRHE: tunnus on jo varattu")
+        flash("Tunnus on jo varattu!", "error")
         filled = {"username": username}
         return render_template("register.html", filled=filled)
 
@@ -274,7 +274,7 @@ def login():
             session["csrf_token"] = secrets.token_hex(16)
             session["username"] = username
             return redirect("/")
-        flash("VIRHE: väärä tunnus tai salasana")
+        flash("Väärä tunnus tai salasana!", "error")
         filled = {"username": username}
         return render_template("login.html", filled=filled)
 
@@ -292,5 +292,5 @@ def require_login():
 def logout():
     del session["user_id"]
     del session["username"]
-    flash("Olet kirjautunut ulos.")
+    flash("Olet kirjautunut ulos.", "info")
     return redirect("/")
