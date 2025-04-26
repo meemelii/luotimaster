@@ -253,8 +253,8 @@ def create():
         return render_template("register.html", filled=filled)
     try:
         users.create_user(username, password1)
-        flash("Tunnus luotu!")
-        return redirect("/")
+        flash("Tunnus luotu, voit nyt kirjautua sisään.")
+        return redirect("/login")
     except sqlite3.IntegrityError:
         flash("VIRHE: tunnus on jo varattu")
         filled = {"username": username}

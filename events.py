@@ -148,7 +148,7 @@ def add_event(user_id, target_id):
     return event_id
 
 def edit_event(event_id, zip_code, weapontype, killerstory):
-    if zip_code is not None:
+    if zip_code:
         sql = "UPDATE Events SET zip = ? WHERE id = ?"
         db.execute(sql, [zip_code, event_id])
     sql = "DELETE FROM Event_details WHERE event_id = ? AND Event_details.title != 'targetstory'"
