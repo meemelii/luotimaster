@@ -8,7 +8,7 @@ def get_outgoing_events(user_id):
              WHERE E.user_id = ? AND confirm_status = 0
              ORDER BY id DESC """
     return db.query(sql, [user_id])
-#Incomings and outgoings need still to be improved
+#Incomings and outgoings could be improved.
 def get_incoming_events(user_id):
     sql = """SELECT E.*, U.username killer_username, T.username target_username
              FROM Events E
@@ -57,8 +57,8 @@ def get_murders(page, page_size):
             LEFT JOIN Users U ON E.user_id = U.id 
             LEFT JOIN Users T  ON E.target_id = T.id
             LEFT JOIN Event_details ED ON E.id = ED.event_id
-            LEFT JOIN details D ON ED.info = D.info
-            WHERE confirm_status = 1
+            LEFT JOIN details D ON ED.info = D.info 
+            WHERE d.title = 'weapontype' AND confirm_status = 1
             GROUP BY E.id
             ORDER BY E.id DESC
             LIMIT ? OFFSET ?
@@ -75,7 +75,7 @@ def get_user_murders(user_id, page=1, page_size=5):
             LEFT JOIN users t  ON e.target_id = t.id
             LEFT JOIN Event_details ED ON E.id = ED.event_id
             LEFT JOIN Details D ON ED.info = D.info
-            WHERE confirm_status = 1 AND e.user_id = ?
+            WHERE D.title = 'weapontype' AND confirm_status = 1 AND e.user_id = ?
             GROUP BY E.id
             ORDER BY e.id DESC
             LIMIT ? OFFSET ?
@@ -96,7 +96,7 @@ def get_user_deaths(user_id, page=1, page_size=5):
             LEFT JOIN users t  ON e.target_id = t.id
             LEFT JOIN Event_details ED ON E.id = ED.event_id
             LEFT JOIN Details D ON ED.info = D.info
-            WHERE confirm_status = 1 AND e.target_id = ?
+            WHERE D.title = 'weapontype' AND confirm_status = 1 AND e.target_id = ? 
             GROUP BY E.id
             ORDER BY e.id DESC
             LIMIT ? OFFSET ?
@@ -121,13 +121,16 @@ def get_search_count(query):
     return db.query(sql, ["%" + query + "%", "%" + query + "%", "%" + query + "%"])[0][0]
 
 def search(query, page, page_size):
-    sql = """SELECT e.id, u.username killer_username, t.username target_username, e.zip
-            FROM events e 
-            LEFT JOIN users u ON e.user_id = u.id 
-            LEFT JOIN users t  ON e.target_id = t.id 
-            WHERE confirm_status = 1 AND 
-            (u.username LIKE ? OR t.username LIKE ? OR e.zip == ?)
-            GROUP BY e.id ORDER BY e.id ASC
+    sql = """SELECT E.id, U.username killer_username, T.username target_username, E.zip, D.describe describe
+            FROM events E
+            LEFT JOIN users U ON E.user_id = U.id 
+            LEFT JOIN users T  ON E.target_id = T.id 
+            LEFT JOIN Event_details ED ON E.id = ED.event_id
+            LEFT JOIN details D ON ED.info = D.info 
+            WHERE D.title = 'weapontype' 
+            AND confirm_status = 1 
+            AND (U.username LIKE ? OR T.username LIKE ? OR E.zip == ?)
+            GROUP BY E.id ORDER BY E.id ASC
             LIMIT ? OFFSET ?
             """
     limit = page_size

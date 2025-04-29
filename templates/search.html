@@ -23,32 +23,32 @@
   
   {% if query %}
   <hr />
-  <h2>Tulokset:</h2>
+  {% if result %}
+    <h2>Tulokset:</h2>
+    <p>
+      <form action="/search/{{ page - 1 }}" method="get"><input type="hidden" name="query" value="{{ query }}" /> <input type="submit" value="&lt;&lt;" /></form>
+      Sivu {{ page }}/{{ page_count }}
+      <form action="/search/{{ page + 1 }}" method="get"><input type="hidden" name="query" value="{{ query }}" /> <input type="submit" value="&gt;&gt;" /></form>
+    </p>
+    <hr />
 
-  
-<p>
-  <form action="/search/{{ page - 1 }}" method="get"><input type="hidden" name="query" value="{{ query }}" /> <input type="submit" value="&lt;&lt;" /></form>
-  Sivu {{ page }}/{{ page_count }}
-  <form action="/search/{{ page + 1 }}" method="get"><input type="hidden" name="query" value="{{ query }}" /> <input type="submit" value="&gt;&gt;" /></form>
-</p>
-<hr />
+      {% for result in results %}
+      <div class="event">
+          <ul>
+            <a href="/event/{{result.id}}">Tapahtuma #{{result.id}}: </a>   
+            <br/>
+          {{ result.killer_username }} {{ result.describe }} {{ result.target_username }}
+          {% if result.zip %}
+          sijainnissa {{result.zip}}
+          {% endif %}
+          </ul>  
+    </div>
+      {% endfor %}
 
-
-    {% for result in results %}
-    <div class="event">
-        <ul>
-          <a href="/event/{{result.id}}">Tapahtuma #{{result.id}}: </a>   
-          <br/>
-        {{ result.killer_username }} tappoi {{ result.target_username }}
-        {% if result.zip %}
-        Sijainnissa {{result.zip}}
-        {% endif %}
-        </ul>  
-  </div>
-    {% endfor %}
-
+    {% else %}
+    <h4>Ei tuloksia. :-(</h4>
     {% endif %}
-  
+  {% endif %}
 
   <hr />
 </body>

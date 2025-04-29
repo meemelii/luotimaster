@@ -15,25 +15,27 @@
       
       Kohde:   <a href="/user/{{ event.target_username }}">{{ event.target_username }}</a><br />
       
+      
       Sijainti: 
-      {% if event.zip == "" %}
-        Ei tiedossa.
+      {% if event.zip %}
+        {{ event.zip }}
       {% else %} 
-      {{ event.zip }}
+        Ei tiedossa.
       {% endif %}  
       <br />
 
       Status:
-      {% if event.confirm_status == 0 %}
-      Ei varmistettu.
-      {% else %}
+      {% if event.confirm_status %}
       Varmistettu.
+      {% else %}
+      Ei varmistettu.
       {% endif %} 
-      <br /> 
-      {% for detail in details %}  
+      <br />
+
+      {% for detail in details %}
         {% if detail.title == "weapontype" %}
           Ase: {{detail.info}} 
-        {% endif %}<br />
+        {% endif %}
         
         {% if detail.title == "killerstory" %}
         <h4>Murhaaja kertoo: </h4>
