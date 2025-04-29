@@ -15,10 +15,10 @@ Ohjelmiston tavoitteena olisi mahdollistaa murhien kirjaamisen yksinkertaisesti 
 - Käyttäjät pystyvät lisäämään kuvan profiilikuvakseen.
 
 ## Sovelluksen nykytilanne
-Sovellus on hyvässä tilanteessa, joskin se sisältää vielä useita kehityskohteita ja epäoptimaalisuuksia, ja vaatii työtä mm. suuren tietomäärän, saavutettavuuden ja koodin siivoamisen osalta. 
+Sovellus on suhteellsien stabiilissa ja toimivassa muodossa. Siinä on vieläkin paljon epäoptimaalisuuksia, ja mahdollisia kehityskohteita, joita voi työstää, jos kehitystä jatkaa.
 - Kirjautuminen ja rekistöröinti toimivat.
 - Tapahtumien lisääminen, muokkaaminen, poistaminen ja raportointi toimivat. Tapahtumiin voi lisätä postinumeron ja murhatavan. 
-- Tapahtuman ilmoittaja sekä sen kohde voivat kommentoida tapahtumaa. Kommentit voi nähdä tapahtumasivulla, joskin niiden visuaalisointi on hyvin kesken. 
+- Tapahtuman ilmoittaja sekä sen kohde voivat kommentoida tapahtumaa. Kommentit voi nähdä tapahtumasivulla.
 - Käyttäjä voi nähdä omat, häneen kohdistetut raportit, sekä kaikkien käyttäjien murhat. Murha-arkistossa on alkeellinen hakutoiminto.
 - Etusivulla näkyy top 5 pelaajaa (murhien määrä).
 - Käyttäjillä on omat sivut, joilla näkyy profiilikuva, murhien ja kuolemien määrä, viimeisimmät 5 murhaa ja kuolemaa eriteltyinä, sekä linkki kaikkiin murhiin ja kuolemiin.
