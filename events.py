@@ -121,7 +121,8 @@ def get_search_count(query):
     return db.query(sql, ["%" + query + "%", "%" + query + "%", "%" + query + "%"])[0][0]
 
 def search(query, page, page_size):
-    sql = """SELECT E.id, U.username killer_username, T.username target_username, E.zip, D.describe describe
+    sql = """SELECT E.id, U.username killer_username, 
+            T.username target_username, E.zip, D.describe describe
             FROM events E
             LEFT JOIN users U ON E.user_id = U.id 
             LEFT JOIN users T  ON E.target_id = T.id 
